@@ -2,14 +2,14 @@
 import React from 'react';
 import ModalManager from 'terra-modal-manager';
 import { MemoryRouter } from 'react-router-dom';
-import NavigationMenu from '../../../menu/_NavigationMenu';
-import ExtensionsExample from '../common/ExtensionsExample';
-import ContentExample from '../common/ContentExample';
+// import NavigationMenu from '../../../menu/_NavigationMenu';
+// import ExtensionsExample from '../common/ExtensionsExample';
+// import ContentExample from '../common/ContentExample';
 
 const ApplicationLayoutMenu = () => (
   <MemoryRouter>
     <ModalManager>
-      <NavigationMenu
+      {/* <NavigationMenu
         id="test-menu"
         layoutConfig={{ size: 'small' }}
         nameConfig={{ title: 'app-test-title' }}
@@ -28,7 +28,7 @@ const ApplicationLayoutMenu = () => (
         }}
         extensions={<ExtensionsExample layoutConfig={{ size: 'small' }} />}
         content={<ContentExample />}
-      />
+      /> */}
     </ModalManager>
   </MemoryRouter>
 );

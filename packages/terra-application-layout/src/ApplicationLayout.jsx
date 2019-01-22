@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+import Overlay from 'terra-overlay';
+import tabbable from 'tabbable';
+import NavigationSideMenu from 'terra-navigation-side-menu';
+import Scroll from 'terra-scroll';
 
-import NavigationMenu from './menu/_NavigationMenu';
 import ApplicationHeader from './header/_ApplicationHeader';
 import ApplicationLayoutPropTypes from './utils/propTypes';
 import Helpers, { isSizeCompact } from './utils/helpers';
 import UtilityHelpers from './utils/utilityHelpers';
-import MenuPanel from './menu/_MenuPanel';
 
 import 'terra-base/lib/baseStyles';
 
@@ -72,6 +74,7 @@ class ApplicationLayout extends React.Component {
   constructor(props) {
     super(props);
 
+    this.setMenuPanelNode = this.setMenuPanelNode.bind(this);
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
     this.handleNavigationItemSelection = this.handleNavigationItemSelection.bind(this);
     this.renderNavigationMenu = this.renderNavigationMenu.bind(this);
@@ -79,6 +82,28 @@ class ApplicationLayout extends React.Component {
     this.state = {
       menuIsOpen: false,
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { menuIsOpen } = this.state;
+
+    if (menuIsOpen && !prevState.menuIsOpen) {
+      if (tabbable(this.menuPanelNode)[0]) {
+        tabbable(this.menuPanelNode)[0].focus();
+      }
+    } else if (!menuIsOpen && prevState.menuIsOpen) {
+      // Sends focus back to the application layout header toggle button if it exists
+      if (document.querySelector('button[data-application-header-toggle]')) {
+        document.querySelector('button[data-application-header-toggle]').focus();
+        // Otherwise, we'll send focus back to first interactable element in the main panel
+      } else if (tabbable(document.querySelector('[data-terra-application-layout-main]'))[0]) {
+        tabbable(document.querySelector('[data-terra-application-layout-main]'))[0].focus();
+      }
+    }
+  }
+
+  setMenuPanelNode(node) {
+    this.menuPanelNode = node;
   }
 
   handleNavigationItemSelection(event, data) {
@@ -100,20 +125,25 @@ class ApplicationLayout extends React.Component {
 
   renderNavigationMenu() {
     const {
-      nameConfig, utilityConfig, extensions, activeBreakpoint, navigationItems, activeNavigationItemKey,
+      navigationItems, activeNavigationItemKey,
     } = this.props;
 
     return (
-      <NavigationMenu
-        nameConfig={nameConfig}
-        navigationItems={navigationItems}
-        activeNavigationItemKey={activeNavigationItemKey}
-        onSelectNavigationItem={this.handleNavigationItemSelection}
-        extensions={extensions}
-        utilityConfig={utilityConfig}
-        activeBreakpoint={activeBreakpoint}
-        toggleMenu={this.handleMenuToggle}
-      />
+      <div className={cx('primary-navigation-menu')}>
+        <Scroll>
+          <NavigationSideMenu
+            menuItems={[{
+              childKeys: navigationItems.map(item => item.key),
+              key: 'primary_navigation_menu',
+              text: 'Application Layout Primary Navigation Menu', // Text is a required value here, but it's never actually rendered
+              isRootMenu: true,
+            }].concat(navigationItems)}
+            selectedMenuKey="primary_navigation_menu"
+            selectedChildKey={activeNavigationItemKey}
+            onChange={this.handleNavigationItemSelection}
+          />
+        </Scroll>
+      </div>
     );
   }
 
@@ -126,7 +156,7 @@ class ApplicationLayout extends React.Component {
     const isCompact = isSizeCompact(activeBreakpoint);
 
     return (
-      <div className={cx('application-layout')}>
+      <div className={cx('application-layout-container')}>
         <ApplicationHeader
           activeBreakpoint={activeBreakpoint}
           nameConfig={nameConfig}
@@ -138,13 +168,15 @@ class ApplicationLayout extends React.Component {
           onSelectNavigationItem={onSelectNavigationItem}
           onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
         />
-        <MenuPanel
-          isOpen={menuIsOpen}
-          onToggle={this.handleMenuToggle}
-          panelContent={isCompact && navigationItems.length ? this.renderNavigationMenu() : undefined}
-        >
-          {children}
-        </MenuPanel>
+        <div className={cx(['application-layout-body', { 'menu-is-open': menuIsOpen }])}>
+          <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? 'true' : null} ref={this.setMenuPanelNode}>
+            {isCompact && navigationItems.length ? this.renderNavigationMenu() : undefined}
+          </div>
+          <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>
+            <Overlay isRelativeToContainer onRequestClose={this.handleMenuToggle} isOpen={menuIsOpen} backgroundStyle="dark" />
+            {children}
+          </main>
+        </div>
       </div>
     );
   }
