@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { withActiveBreakpoint } from 'terra-breakpoints';
 
+import SecondaryNavigationMenu from './_SecondaryNavigationMenu';
+
 import 'terra-base/lib/baseStyles';
 
 import styles from './ContentLayout.module.scss';
@@ -27,14 +29,13 @@ const withContentLayout = (WrappedComponent) => {
 const isCompactContentLayout = activeBreakpoint => activeBreakpoint === 'tiny' || activeBreakpoint === 'small';
 
 const propTypes = {
+  menuItems: PropTypes.array,
+  initialSelectedMenuItemKey: PropTypes.string,
+  onTerminalMenuItemSelection: PropTypes.func,
   /**
    * The element to display in the main content area.
    */
   children: PropTypes.element,
-  /**
-   * The component to display in the panel content area.
-   */
-  menuContent: PropTypes.node,
   /**
    * @private
    */
@@ -62,16 +63,11 @@ class ContentLayout extends React.Component {
     this.openCompactMenu = this.openCompactMenu.bind(this);
     this.pinMenu = this.pinMenu.bind(this);
     this.unpinMenu = this.unpinMenu.bind(this);
+    this.handleMenuItemSelection = this.handleMenuItemSelection.bind(this);
 
     this.state = {
       compactMenuIsOpen: false,
       menuIsPinnedOpen: true,
-      compactMenuProviderValue: {
-        closeMenu: this.closeCompactMenu,
-      },
-      defaultMenuProviderValue: {
-        closeMenu: undefined,
-      },
       compactContentProviderValue: {
         openMenu: this.openCompactMenu,
       },
@@ -83,10 +79,10 @@ class ContentLayout extends React.Component {
     };
   }
 
-  closeCompactMenu() {
+  closeCompactMenu(callback) {
     this.setState({
       compactMenuIsOpen: false,
-    });
+    }, callback);
   }
 
   openCompactMenu() {
@@ -117,42 +113,52 @@ class ContentLayout extends React.Component {
     });
   }
 
+  handleMenuItemSelection(key, metaData) {
+    const {
+      onTerminalMenuItemSelection, activeBreakpoint,
+    } = this.props;
+
+    if (isCompactContentLayout(activeBreakpoint)) {
+      this.closeCompactMenu(() => {
+        if (onTerminalMenuItemSelection) {
+          onTerminalMenuItemSelection(key, metaData);
+        }
+      });
+    } else if (onTerminalMenuItemSelection) {
+      onTerminalMenuItemSelection(key, metaData);
+    }
+  }
+
   render() {
     const {
+      menuItems,
+      initialSelectedMenuItemKey,
       children,
-      menuContent,
       activeBreakpoint,
     } = this.props;
 
     const {
-      compactMenuIsOpen, menuIsPinnedOpen, compactMenuProviderValue, compactContentProviderValue, defaultMenuProviderValue, defaultContentProviderValue,
+      compactMenuIsOpen,
+      menuIsPinnedOpen,
+      compactContentProviderValue,
+      defaultContentProviderValue,
     } = this.state;
 
-    let renderMenu;
-    let menuProviderValue;
-    let contentProviderValue;
-    if (isCompactContentLayout(activeBreakpoint)) {
-      renderMenu = compactMenuIsOpen;
-      menuProviderValue = compactMenuProviderValue;
-      contentProviderValue = compactContentProviderValue;
-    } else {
-      renderMenu = menuIsPinnedOpen;
-      menuProviderValue = defaultMenuProviderValue;
-      contentProviderValue = defaultContentProviderValue;
-    }
+    const isCompact = isCompactContentLayout(activeBreakpoint);
 
     return (
-      <div className={cx(['container', { 'panel-is-open': renderMenu }])}>
+      <div className={cx(['container', { 'panel-is-open': isCompact ? compactMenuIsOpen : menuIsPinnedOpen }])}>
         <div className={cx('panel')}>
-          <ContentLayoutContext.Provider
-            value={menuProviderValue}
-          >
-            {menuContent}
-          </ContentLayoutContext.Provider>
+          <SecondaryNavigationMenu
+            menuItems={menuItems}
+            initialSelectedKey={initialSelectedMenuItemKey}
+            onChildItemSelection={this.handleMenuItemSelection}
+            key={isCompact ? 'compact' : 'default'}
+          />
         </div>
         <div className={cx('content')}>
           <ContentLayoutContext.Provider
-            value={contentProviderValue}
+            value={isCompact ? compactContentProviderValue : defaultContentProviderValue}
           >
             {children}
           </ContentLayoutContext.Provider>

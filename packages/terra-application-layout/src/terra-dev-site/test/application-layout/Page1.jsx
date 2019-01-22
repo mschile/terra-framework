@@ -4,8 +4,8 @@ import {
 } from 'react-router-dom';
 
 import CommonPageContent from './CommonPageContent';
-import ContentLayout, { withContentLayout } from '../../../ContentLayout';
-import RoutingSecondaryNavigationMenu from '../../../RoutingSecondaryNavigationMenu';
+import ContentLayout from '../../../ContentLayout';
+// import RoutingSecondaryNavigationMenu from '../../../RoutingSecondaryNavigationMenu';
 
 const menuItems = [{
   childKeys: ['about', 'components', 'tests'],
@@ -41,17 +41,17 @@ const menuItems = [{
   },
 }];
 
-const Page1Menu = withContentLayout(({ initialSelectedKey, contentLayout }) => (
-  <RoutingSecondaryNavigationMenu
-    menuItems={menuItems}
-    initialSelectedKey={initialSelectedKey}
-    onChildItemSelection={() => {
-      if (contentLayout.closeMenu) {
-        contentLayout.closeMenu();
-      }
-    }}
-  />
-));
+// const Page1Menu = withContentLayout(({ initialSelectedKey, contentLayout }) => (
+//   <RoutingSecondaryNavigationMenu
+//     menuItems={menuItems}
+//     initialSelectedKey={initialSelectedKey}
+//     onChildItemSelection={() => {
+//       if (contentLayout.closeMenu) {
+//         contentLayout.closeMenu();
+//       }
+//     }}
+//   />
+// ));
 
 class Page1 extends React.Component {
   static getInitialSelectedKey(pathname) {
@@ -87,15 +87,21 @@ class Page1 extends React.Component {
   }
 
   render() {
+    const { history } = this.props;
     const { initialSelectedKey } = this.state;
 
     return (
       <ContentLayout
-        menuContent={(
-          <Page1Menu
-            initialSelectedKey={initialSelectedKey}
-          />
-        )}
+        menuItems={menuItems}
+        initialSelectedMenuItemKey={initialSelectedKey}
+        onTerminalMenuItemSelection={(childKey, metaData) => {
+          history.push(metaData.path);
+        }}
+        // menuContent={(
+        //   <Page1Menu
+        //     initialSelectedKey={initialSelectedKey}
+        //   />
+        // )}
       >
         <Switch>
           <Route path="/page_1/about" render={() => <CommonPageContent contentName="About" />} />
