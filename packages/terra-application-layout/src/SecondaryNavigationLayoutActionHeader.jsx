@@ -4,37 +4,37 @@ import ButtonGroup from 'terra-button-group';
 import IconLeft from 'terra-icon/lib/icon/IconLeft';
 import IconLeftPane from 'terra-icon/lib/icon/IconLeftPane';
 
-import { withContentLayout } from './ContentLayout';
+import { withSecondaryNavigationLayout } from './SecondaryNavigationLayout';
 
-const ContentLayoutActionHeader = withContentLayout(({
-  contentLayout,
+const SecondaryNavigationLayoutActionHeader = withSecondaryNavigationLayout(({
+  secondaryNavigationLayout,
 }) => {
   let button;
-  if (contentLayout && contentLayout.openMenu) {
+  if (secondaryNavigationLayout && secondaryNavigationLayout.openMenu) {
     button = (
       <ButtonGroup.Button
         icon={<IconLeft />}
         key="open-menu"
         text="Open Menu"
-        onClick={contentLayout.openMenu}
+        onClick={secondaryNavigationLayout.openMenu}
       />
     );
-  } else if (contentLayout && contentLayout.menuIsPinned) {
+  } else if (secondaryNavigationLayout && secondaryNavigationLayout.menuIsPinned) {
     button = (
       <ButtonGroup.Button
         icon={<IconLeftPane />}
         key="pin-menu"
         text="Pin Menu"
-        onClick={contentLayout.unpinMenu}
+        onClick={secondaryNavigationLayout.unpinMenu}
       />
     );
-  } else if (contentLayout) {
+  } else if (secondaryNavigationLayout) {
     button = (
       <ButtonGroup.Button
         icon={<IconLeftPane />}
         key="pin-menu"
         text="Unpin Menu"
-        onClick={contentLayout.pinMenu}
+        onClick={secondaryNavigationLayout.pinMenu}
       />
     );
   }
@@ -45,11 +45,12 @@ const ContentLayoutActionHeader = withContentLayout(({
         display: 'flex',
         alignItems: 'center',
         padding: '0.714rem',
+        borderBottom: '1px solid lightgrey',
       }}
     >
       <ButtonGroup
         id="controlled-button-group"
-        selectedKeys={contentLayout && contentLayout.menuIsPinned ? ['pin-menu'] : undefined}
+        selectedKeys={secondaryNavigationLayout && secondaryNavigationLayout.menuIsPinned ? ['pin-menu'] : undefined}
       >
         {button}
       </ButtonGroup>
@@ -57,4 +58,4 @@ const ContentLayoutActionHeader = withContentLayout(({
   );
 });
 
-export default ContentLayoutActionHeader;
+export default SecondaryNavigationLayoutActionHeader;

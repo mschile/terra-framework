@@ -4,42 +4,8 @@ import {
 } from 'react-router-dom';
 
 import CommonPageContent from './CommonPageContent';
-import ContentLayout from '../../../ContentLayout';
-// import RoutingSecondaryNavigationMenu from '../../../RoutingSecondaryNavigationMenu';
+import SecondaryNavigationLayout from '../../../SecondaryNavigationLayout';
 
-const menuItems = [{
-  childKeys: ['about', 'components', 'tests'],
-  key: 'page_1_menu',
-  text: 'Page 1 Menu',
-}, {
-  childKeys: ['component_1', 'component_2'],
-  key: 'components',
-  text: 'Components',
-}, {
-  key: 'component_1',
-  text: 'Component 1',
-  metaData: {
-    path: '/page_1/components/1',
-  },
-}, {
-  key: 'component_2',
-  text: 'Component 2',
-  metaData: {
-    path: '/page_1/components/2',
-  },
-}, {
-  key: 'about',
-  text: 'About',
-  metaData: {
-    path: '/page_1/about',
-  },
-}, {
-  key: 'tests',
-  text: 'Tests',
-  metaData: {
-    path: '/page_1/tests',
-  },
-}];
 
 // const Page1Menu = withContentLayout(({ initialSelectedKey, contentLayout }) => (
 //   <RoutingSecondaryNavigationMenu
@@ -83,25 +49,53 @@ class Page1 extends React.Component {
 
     this.state = {
       initialSelectedKey: Page1.getInitialSelectedKey(props.location.pathname),
+      menuItems: [{
+        childKeys: ['about', 'components', 'tests'],
+        key: 'page_1_menu',
+        text: 'Page 1 Menu',
+      }, {
+        childKeys: ['component_1', 'component_2'],
+        key: 'components',
+        text: 'Components',
+      }, {
+        key: 'component_1',
+        text: 'Component 1',
+        metaData: {
+          path: '/page_1/components/1',
+        },
+      }, {
+        key: 'component_2',
+        text: 'Component 2',
+        metaData: {
+          path: '/page_1/components/2',
+        },
+      }, {
+        key: 'about',
+        text: 'About',
+        metaData: {
+          path: '/page_1/about',
+        },
+      }, {
+        key: 'tests',
+        text: 'Tests',
+        metaData: {
+          path: '/page_1/tests',
+        },
+      }],
     };
   }
 
   render() {
     const { history } = this.props;
-    const { initialSelectedKey } = this.state;
+    const { menuItems, initialSelectedKey } = this.state;
 
     return (
-      <ContentLayout
+      <SecondaryNavigationLayout
         menuItems={menuItems}
         initialSelectedMenuItemKey={initialSelectedKey}
         onTerminalMenuItemSelection={(childKey, metaData) => {
           history.push(metaData.path);
         }}
-        // menuContent={(
-        //   <Page1Menu
-        //     initialSelectedKey={initialSelectedKey}
-        //   />
-        // )}
       >
         <Switch>
           <Route path="/page_1/about" render={() => <CommonPageContent contentName="About" />} />
@@ -110,7 +104,7 @@ class Page1 extends React.Component {
           <Route path="/page_1/tests" render={() => <CommonPageContent contentName="Tests" />} />
           <Redirect to="/page_1/about" />
         </Switch>
-      </ContentLayout>
+      </SecondaryNavigationLayout>
     );
   }
 }

@@ -6,26 +6,26 @@ import NavigationSideMenu from 'terra-navigation-side-menu';
 
 import 'terra-base/lib/baseStyles';
 
-import styles from './ContentLayout.module.scss';
+import styles from './SecondaryNavigationLayout.module.scss';
 
 const cx = classNames.bind(styles);
 
-const ContentLayoutContext = React.createContext();
+const SecondaryNavigationLayoutContext = React.createContext();
 
-const withContentLayout = (WrappedComponent) => {
-  const WithContentLayoutComp = props => (
-    <ContentLayoutContext.Consumer>
-      {contentLayout => <WrappedComponent {...props} contentLayout={contentLayout} />}
-    </ContentLayoutContext.Consumer>
+const withSecondaryNavigationLayout = (WrappedComponent) => {
+  const WithSecondaryNavigationLayoutComp = props => (
+    <SecondaryNavigationLayoutContext.Consumer>
+      {secondaryNavigationLayout => <WrappedComponent {...props} secondaryNavigationLayout={secondaryNavigationLayout} />}
+    </SecondaryNavigationLayoutContext.Consumer>
   );
 
-  WithContentLayoutComp.WrappedComponent = WrappedComponent;
-  WithContentLayoutComp.displayName = `withContentLayout(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  WithSecondaryNavigationLayoutComp.WrappedComponent = WrappedComponent;
+  WithSecondaryNavigationLayoutComp.displayName = `withSecondaryNavigationLayout(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
-  return WithContentLayoutComp;
+  return WithSecondaryNavigationLayoutComp;
 };
 
-const isCompactContentLayout = activeBreakpoint => activeBreakpoint === 'tiny' || activeBreakpoint === 'small';
+const isCompactLayout = activeBreakpoint => activeBreakpoint === 'tiny' || activeBreakpoint === 'small';
 
 const propTypes = {
   menuItems: PropTypes.array,
@@ -41,11 +41,11 @@ const propTypes = {
   activeBreakpoint: PropTypes.string,
 };
 
-class ContentLayout extends React.Component {
+class SecondaryNavigationLayout extends React.Component {
   static buildAncestorMap(menuItems) {
     const ancestorMap = {};
     menuItems.forEach((item) => {
-      ancestorMap[item.key] = ContentLayout.findAncestor(item.key, menuItems);
+      ancestorMap[item.key] = SecondaryNavigationLayout.findAncestor(item.key, menuItems);
     });
 
     return ancestorMap;
@@ -63,7 +63,7 @@ class ContentLayout extends React.Component {
 
   static buildSelectionPath(key, ancestorMap) {
     if (ancestorMap[key]) {
-      return [...ContentLayout.buildSelectionPath(ancestorMap[key].key, ancestorMap)].concat([key]);
+      return [...SecondaryNavigationLayout.buildSelectionPath(ancestorMap[key].key, ancestorMap)].concat([key]);
     }
 
     return [key];
@@ -76,15 +76,15 @@ class ContentLayout extends React.Component {
       newState.previousActiveBreakpoint = props.activeBreakpoint;
     }
 
-    if (!isCompactContentLayout(props.activeBreakpoint) && state.compactMenuIsOpen) {
+    if (!isCompactLayout(props.activeBreakpoint) && state.compactMenuIsOpen) {
       /**
        * The compact menu state is reset when a non-compact breakpoint is active.
        */
       newState.compactMenuIsOpen = false;
     }
 
-    if ((!isCompactContentLayout(state.previousActiveBreakpoint) && isCompactContentLayout(props.activeBreakpoint))
-    || (isCompactContentLayout(state.previousActiveBreakpoint) && !isCompactContentLayout(props.activeBreakpoint))) {
+    if ((!isCompactLayout(state.previousActiveBreakpoint) && isCompactLayout(props.activeBreakpoint))
+    || (isCompactLayout(state.previousActiveBreakpoint) && !isCompactLayout(props.activeBreakpoint))) {
       if (state.selectionPath) {
         newState.selectedMenuKey = state.selectionPath[state.selectionPath.length - 2];
         newState.selectedChildKey = state.selectionPath[state.selectionPath.length - 1];
@@ -102,7 +102,7 @@ class ContentLayout extends React.Component {
     this.unpinMenu = this.unpinMenu.bind(this);
     this.handleMenuItemSelection = this.handleMenuItemSelection.bind(this);
 
-    this.ancestorMap = ContentLayout.buildAncestorMap(props.menuItems);
+    this.ancestorMap = SecondaryNavigationLayout.buildAncestorMap(props.menuItems);
 
     const selectedItem = props.menuItems.find(item => item.key === props.initialSelectedMenuItemKey);
     const parentItem = this.ancestorMap[props.initialSelectedMenuItemKey];
@@ -117,7 +117,7 @@ class ContentLayout extends React.Component {
     } else if (parentItem) {
       selectedMenuKey = parentItem.key;
       selectedChildKey = selectedItem.key;
-      selectionPath = ContentLayout.buildSelectionPath(selectedItem.key, this.ancestorMap);
+      selectionPath = SecondaryNavigationLayout.buildSelectionPath(selectedItem.key, this.ancestorMap);
     }
 
     this.state = {
@@ -177,7 +177,7 @@ class ContentLayout extends React.Component {
     if (newChildKey && selectionData.metaData && selectionData.metaData.path) {
       this.setState({
         compactMenuIsOpen: false,
-        selectionPath: ContentLayout.buildSelectionPath(newChildKey, this.ancestorMap),
+        selectionPath: SecondaryNavigationLayout.buildSelectionPath(newChildKey, this.ancestorMap),
         selectedChildKey: newChildKey,
         selectedMenuKey: newMenuKey,
       }, () => {
@@ -223,7 +223,7 @@ class ContentLayout extends React.Component {
       selectedChildKey,
     } = this.state;
 
-    const isCompact = isCompactContentLayout(activeBreakpoint);
+    const isCompact = isCompactLayout(activeBreakpoint);
 
     /**
      * At within compact viewports, the navigation menu should render each menu item as if it has
@@ -247,22 +247,22 @@ class ContentLayout extends React.Component {
           />
         </div>
         <div className={cx('content')}>
-          <ContentLayoutContext.Provider
+          <SecondaryNavigationLayoutContext.Provider
             value={isCompact ? compactContentProviderValue : defaultContentProviderValue}
           >
             {children}
-          </ContentLayoutContext.Provider>
+          </SecondaryNavigationLayoutContext.Provider>
         </div>
       </div>
     );
   }
 }
 
-ContentLayout.propTypes = propTypes;
+SecondaryNavigationLayout.propTypes = propTypes;
 
-export default withActiveBreakpoint(ContentLayout);
+export default withActiveBreakpoint(SecondaryNavigationLayout);
 export {
-  ContentLayoutContext,
-  withContentLayout,
-  isCompactContentLayout,
+  SecondaryNavigationLayoutContext,
+  withSecondaryNavigationLayout,
+  isCompactLayout,
 };
