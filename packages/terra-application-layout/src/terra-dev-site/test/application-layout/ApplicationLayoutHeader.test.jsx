@@ -1,12 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import ApplicationHeader from '../../../header/_ApplicationHeader';
+import ApplicationLayoutHeader from '../../../header/_ApplicationLayoutHeader';
 import ExtensionsExample from '../common/ExtensionsExample';
 
-const ApplicationLayoutHeader = () => (
+const ApplicationLayoutHeaderTest = () => (
   <MemoryRouter>
-    <ApplicationHeader
+    <ApplicationLayoutHeader
       id="test-header"
       layoutConfig={{ size: 'large' }}
       nameConfig={{ title: 'app-test-title' }}
@@ -44,4 +44,4 @@ const ApplicationLayoutHeader = () => (
   </MemoryRouter>
 );
 
-export default ApplicationLayoutHeader;
+export default ApplicationLayoutHeaderTest;

@@ -1,12 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import ApplicationHeader from '../../../header/_ApplicationHeader';
+import ApplicationLayoutHeader from '../../../header/_ApplicationLayoutHeader';
 import ExtensionsExample from '../common/ExtensionsExample';
 
 const ApplicationLayoutHeaderSmall = () => (
   <MemoryRouter>
-    <ApplicationHeader
+    <ApplicationLayoutHeader
       id="test-header"
       layoutConfig={{ size: 'small', toggleMenu: () => {} }}
       nameConfig={{ title: 'app-test-title' }}

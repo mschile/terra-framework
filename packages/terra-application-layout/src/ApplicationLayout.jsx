@@ -6,7 +6,7 @@ import tabbable from 'tabbable';
 import NavigationSideMenu from 'terra-navigation-side-menu';
 import Scroll from 'terra-scroll';
 
-import ApplicationHeader from './header/_ApplicationHeader';
+import ApplicationLayoutHeader from './header/_ApplicationLayoutHeader';
 import ApplicationLayoutPropTypes from './utils/propTypes';
 import Helpers, { isSizeCompact } from './utils/helpers';
 import UtilityHelpers from './utils/utilityHelpers';
@@ -157,7 +157,7 @@ class ApplicationLayout extends React.Component {
 
     return (
       <div className={cx('application-layout-container')}>
-        <ApplicationHeader
+        <ApplicationLayoutHeader
           activeBreakpoint={activeBreakpoint}
           nameConfig={nameConfig}
           utilityConfig={utilityConfig}

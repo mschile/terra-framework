@@ -14,7 +14,7 @@ import ApplicationLayoutPropTypes from '../utils/propTypes';
 import Helpers from '../utils/helpers';
 
 import 'terra-base/lib/baseStyles';
-import styles from './ApplicationHeader.module.scss';
+import styles from './ApplicationLayoutHeader.module.scss';
 
 const cx = classNames.bind(styles);
 
