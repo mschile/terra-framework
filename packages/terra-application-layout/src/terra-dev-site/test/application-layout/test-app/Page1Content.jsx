@@ -2,24 +2,10 @@ import React from 'react';
 import {
   withRouter, matchPath, Redirect, Switch, Route,
 } from 'react-router-dom';
+import CommonContent from './CommonContent';
+import SecondaryNavigationLayout from '../../../../SecondaryNavigationLayout';
 
-import CommonPageContent from './CommonPageContent';
-import SecondaryNavigationLayout from '../../../SecondaryNavigationLayout';
-
-
-// const Page1Menu = withContentLayout(({ initialSelectedKey, contentLayout }) => (
-//   <RoutingSecondaryNavigationMenu
-//     menuItems={menuItems}
-//     initialSelectedKey={initialSelectedKey}
-//     onChildItemSelection={() => {
-//       if (contentLayout.closeMenu) {
-//         contentLayout.closeMenu();
-//       }
-//     }}
-//   />
-// ));
-
-class Page1 extends React.Component {
+class Page1Content extends React.Component {
   static getInitialSelectedKey(pathname) {
     if (matchPath(pathname, '/page_1/about')) {
       return 'about';
@@ -48,7 +34,7 @@ class Page1 extends React.Component {
     super(props);
 
     this.state = {
-      initialSelectedKey: Page1.getInitialSelectedKey(props.location.pathname),
+      initialSelectedKey: Page1Content.getInitialSelectedKey(props.location.pathname),
       menuItems: [{
         childKeys: ['about', 'components', 'tests'],
         key: 'page_1_menu',
@@ -98,10 +84,10 @@ class Page1 extends React.Component {
         }}
       >
         <Switch>
-          <Route path="/page_1/about" render={() => <CommonPageContent contentName="About" />} />
-          <Route path="/page_1/components/1" render={() => <CommonPageContent contentName="Component 1" />} />
-          <Route path="/page_1/components/2" render={() => <CommonPageContent contentName="Component 2" />} />
-          <Route path="/page_1/tests" render={() => <CommonPageContent contentName="Tests" />} />
+          <Route path="/page_1/about" render={() => <CommonContent contentName="About" />} />
+          <Route path="/page_1/components/1" render={() => <CommonContent contentName="Component 1" />} />
+          <Route path="/page_1/components/2" render={() => <CommonContent contentName="Component 2" />} />
+          <Route path="/page_1/tests" render={() => <CommonContent contentName="Tests" />} />
           <Redirect to="/page_1/about" />
         </Switch>
       </SecondaryNavigationLayout>
@@ -109,4 +95,4 @@ class Page1 extends React.Component {
   }
 }
 
-export default withRouter(Page1);
+export default withRouter(Page1Content);

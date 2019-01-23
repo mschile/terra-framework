@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ContentContainer from 'terra-content-container';
-import SecondaryNavigationLayoutActionHeader from '../../../SecondaryNavigationLayoutActionHeader';
+import SecondaryNavigationLayoutActionHeader from '../../../../SecondaryNavigationLayoutActionHeader';
 
 const PageContent = ({
   contentName, children,
