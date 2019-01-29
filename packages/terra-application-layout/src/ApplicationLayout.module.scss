@@ -67,4 +67,29 @@
     height: 100%;
     position: relative;
   } 
+
+  .extensions-layout {
+    display: flex;
+  }
+
+  .extensions-drawer {
+    background-color: green;
+    display: flex;
+    max-height: calc(100% - 3.5725rem);
+    position: absolute;
+    top: 3.5725rem;
+    width: 100%;
+    z-index: 100;
+  }
+
+  .extensions-item {
+    background-color: orange;
+    cursor: pointer;
+    height: 3.5725rem;
+    width: 3.5725rem;
+  }
+
+  .extensions-item:hover {
+    background-color: red;
+  }
 }

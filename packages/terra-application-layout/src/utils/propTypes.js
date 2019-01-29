@@ -50,6 +50,30 @@ const utilityConfigPropType = PropTypes.shape({
  */
 const utilityMenuItemPropType = UtilityUtils.itemShape;
 
+/**
+ * Shape for ApplicationLayout's 'extensionConfig' prop.
+ */
+const extensionConfigPropType = PropTypes.shape({
+  extensions: PropTypes.arrayOf(PropTypes.shape({
+    /**
+     * Image to be rendered
+     */
+    image: PropTypes.element.isRequired,
+    /**
+     * Object to be returned in the onSelect
+     */
+    metaData: PropTypes.object,
+    /**
+     * Selection callback to return onSelect(event, metaData)
+     */
+    onSelect: PropTypes.func,
+    /**
+     * Text display and/or aria-label
+     */
+    text: PropTypes.string.isRequired,
+  })),
+});
+
 export default {
   utilityConfigPropType,
   utilityMenuItemPropType,
@@ -57,4 +81,5 @@ export default {
   nameConfigPropType,
   navigationAlignmentPropType,
   navigationItemsPropType,
+  extensionConfigPropType,
 };

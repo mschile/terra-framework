@@ -31,33 +31,33 @@ const DisclosureComponent = withDisclosureManager(({ disclosureManager, text }) 
   </ContentContainer>
 ));
 
-const Extensions = withDisclosureManager(withActiveBreakpoint(({ disclosureManager, activeBreakpoint }) => (
-  <span>
-    <Button
-      style={{ marginRight: '5px' }}
-      text={activeBreakpoint === 'tiny' || activeBreakpoint === 'small' ? 'E1' : 'Extension 1'}
-      onClick={() => {
-        disclosureManager.disclose({
-          preferredType: 'modal',
-          content: {
-            component: <DisclosureComponent text="Extensions Go Here" />,
-          },
-        });
-      }}
-    />
-    <Button
-      text={activeBreakpoint === 'tiny' || activeBreakpoint === 'small' ? 'E2' : 'Extension 2'}
-      onClick={() => {
-        disclosureManager.disclose({
-          preferredType: 'modal',
-          content: {
-            component: <DisclosureComponent text="Extensions Go Here" />,
-          },
-        });
-      }}
-    />
-  </span>
-)));
+// const Extensions = withDisclosureManager(withActiveBreakpoint(({ disclosureManager, activeBreakpoint }) => (
+//   <span>
+//     <Button
+//       style={{ marginRight: '5px' }}
+//       text={activeBreakpoint === 'tiny' || activeBreakpoint === 'small' ? 'E1' : 'Extension 1'}
+//       onClick={() => {
+//         disclosureManager.disclose({
+//           preferredType: 'modal',
+//           content: {
+//             component: <DisclosureComponent text="Extensions Go Here" />,
+//           },
+//         });
+//       }}
+//     />
+//     <Button
+//       text={activeBreakpoint === 'tiny' || activeBreakpoint === 'small' ? 'E2' : 'Extension 2'}
+//       onClick={() => {
+//         disclosureManager.disclose({
+//           preferredType: 'modal',
+//           content: {
+//             component: <DisclosureComponent text="Extensions Go Here" />,
+//           },
+//         });
+//       }}
+//     />
+//   </span>
+// )));
 
 /**
  * The navigationItems will be used to present the ApplicationLayout's navigation controls. The paths provided here must be present in
@@ -201,6 +201,56 @@ class TestApplication extends React.Component {
       return <Redirect to="/page_1" />;
     }
 
+    const handleSelect = (event, metaData) => {
+      disclosureManager.disclose({
+        preferredType: 'modal',
+        content: {
+          component: <DisclosureComponent text={metaData.key} />,
+        },
+      });
+    };
+
+    const extensionConfig = {
+      extensions: [
+        {
+          image: <div>0</div>,
+          metaData: { key: '0' },
+          onSelect: handleSelect,
+          text: '0',
+        },
+        {
+          image: <div>1</div>,
+          metaData: { key: '1' },
+          onSelect: handleSelect,
+          text: '1',
+        },
+        {
+          image: <div>2</div>,
+          metaData: { key: '2' },
+          onSelect: handleSelect,
+          text: '2',
+        },
+        {
+          image: <div>3</div>,
+          metaData: { key: '3' },
+          onSelect: handleSelect,
+          text: '3',
+        },
+        {
+          image: <div>4</div>,
+          metaData: { key: '4' },
+          onSelect: handleSelect,
+          text: '4',
+        },
+        {
+          image: <div>5</div>,
+          metaData: { key: '5' },
+          onSelect: handleSelect,
+          text: '5',
+        },
+      ],
+    };
+
     return (
       <ContentContainer
         fill
@@ -211,7 +261,7 @@ class TestApplication extends React.Component {
           activeBreakpoint={activeBreakpoint}
           nameConfig={nameConfig}
           utilityConfig={utilityConfig}
-          extensions={<Extensions />}
+          extensionConfig={extensionConfig}
           navigationItems={navigationItems}
           activeNavigationItemKey={activeNavigationItem.key}
           onSelectNavigationItem={(navigationItemKey) => {

@@ -10,12 +10,38 @@ import ApplicationLayoutHeader from './header/_ApplicationLayoutHeader';
 import ApplicationLayoutPropTypes from './utils/propTypes';
 import Helpers, { isSizeCompact } from './utils/helpers';
 import UtilityHelpers from './utils/utilityHelpers';
+import ExtensionDrawer from './extensions/ExtensionDrawer';
+import ExtensionBar from './extensions/ExtensionBar';
 
 import 'terra-base/lib/baseStyles';
 
 import styles from './ApplicationLayout.module.scss';
 
 const cx = classNames.bind(styles);
+
+const createExtensions = (extensionConfig, activeBreakpoint, extensionIsOpen, handleExtensionToggle) => (
+  <ExtensionBar
+    extensionConfig={extensionConfig}
+    activeBreakpoint={activeBreakpoint}
+    isOpen={extensionIsOpen}
+    onRequestClose={handleExtensionToggle}
+  />
+);
+
+const createExtensionDrawer = (extensionConfig, activeBreakpoint, extensionIsOpen, handleExtensionToggle) => {
+  if (!extensionConfig || !extensionIsOpen) {
+    return null;
+  }
+
+  return (
+    <ExtensionDrawer
+      extensionConfig={extensionConfig}
+      activeBreakpoint={activeBreakpoint}
+      isOpen={extensionIsOpen}
+      onRequestClose={handleExtensionToggle}
+    />
+  );
+};
 
 const propTypes = {
   /**
@@ -25,7 +51,7 @@ const propTypes = {
   /**
    * The content to be rendered in the ApplicationLayout's extensions region.
    */
-  extensions: PropTypes.element,
+  extensionConfig: ApplicationLayoutPropTypes.extensionConfigPropType,
   /**
    * Alignment of the header's navigation primary tabs. ( e.g start, center, end )
    */
@@ -76,11 +102,13 @@ class ApplicationLayout extends React.Component {
 
     this.setMenuPanelNode = this.setMenuPanelNode.bind(this);
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
+    this.handleExtensionToggle = this.handleExtensionToggle.bind(this);
     this.handleNavigationItemSelection = this.handleNavigationItemSelection.bind(this);
     this.renderNavigationMenu = this.renderNavigationMenu.bind(this);
 
     this.state = {
       menuIsOpen: false,
+      extensionIsOpen: false,
     };
   }
 
@@ -123,6 +151,12 @@ class ApplicationLayout extends React.Component {
     }));
   }
 
+  handleExtensionToggle() {
+    this.setState(state => ({
+      extensionIsOpen: !state.extensionIsOpen,
+    }));
+  }
+
   renderNavigationMenu() {
     const {
       navigationItems, activeNavigationItemKey,
@@ -149,11 +183,13 @@ class ApplicationLayout extends React.Component {
 
   render() {
     const {
-      nameConfig, utilityConfig, navigationAlignment, navigationItems, extensions, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem,
+      nameConfig, utilityConfig, navigationAlignment, navigationItems, extensionConfig, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem,
     } = this.props;
-    const { menuIsOpen } = this.state;
+    const { menuIsOpen, extensionIsOpen } = this.state;
 
     const isCompact = isSizeCompact(activeBreakpoint);
+    const extensions = createExtensions(extensionConfig, activeBreakpoint, extensionIsOpen, this.handleExtensionToggle);
+    const extensionDrawer = createExtensionDrawer(extensionConfig, activeBreakpoint, extensionIsOpen, this.handleExtensionToggle);
 
     return (
       <div className={cx('application-layout-container')}>
@@ -168,11 +204,13 @@ class ApplicationLayout extends React.Component {
           onSelectNavigationItem={onSelectNavigationItem}
           onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
         />
+        {extensionDrawer}
         <div className={cx(['application-layout-body', { 'menu-is-open': menuIsOpen }])}>
           <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? 'true' : null} ref={this.setMenuPanelNode}>
             {isCompact && navigationItems.length ? this.renderNavigationMenu() : undefined}
           </div>
           <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>
+            <Overlay isRelativeToContainer onRequestClose={event => event.stopPropagation()} isOpen={extensionIsOpen} backgroundStyle="dark" style={{ zIndex: '7000' }} />
             <Overlay isRelativeToContainer onRequestClose={this.handleMenuToggle} isOpen={menuIsOpen} backgroundStyle="dark" />
             {children}
           </main>
