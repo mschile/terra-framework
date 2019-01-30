@@ -167,14 +167,16 @@ class SecondaryNavigationLayout extends React.Component {
   }
 
   handleMenuItemSelection(event, selectionData) {
-    const { onTerminalMenuItemSelection } = this.props;
+    const { menuItems, onTerminalMenuItemSelection } = this.props;
     const { selectionPath } = this.state;
 
     const newChildKey = selectionData.selectedChildKey;
     const newMenuKey = selectionData.selectedMenuKey;
 
+    const newChildItem = menuItems.find(item => item.key === newChildKey);
+
     // If an endpoint has been reached, reset selection path and update.
-    if (newChildKey && selectionData.metaData && selectionData.metaData.path) {
+    if (newChildKey && !newChildItem.childKeys) {
       this.setState({
         compactMenuIsOpen: false,
         selectionPath: SecondaryNavigationLayout.buildSelectionPath(newChildKey, this.ancestorMap),
@@ -189,12 +191,12 @@ class SecondaryNavigationLayout extends React.Component {
       return;
     }
 
-    if (selectionPath.indexOf(newChildKey) >= 0) {
+    if (selectionPath && selectionPath.indexOf(newChildKey) >= 0) {
       this.setState({
         selectedMenuKey: newMenuKey,
         selectedChildKey: newChildKey,
       });
-    } else if (selectionPath.indexOf(newMenuKey) >= 0) {
+    } else if (selectionPath && selectionPath.indexOf(newMenuKey) >= 0) {
       this.setState({
         selectedMenuKey: newMenuKey,
         selectedChildKey: selectionPath[selectionPath.indexOf(newMenuKey) + 1],
