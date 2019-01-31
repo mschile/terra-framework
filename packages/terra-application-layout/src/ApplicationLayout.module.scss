@@ -79,12 +79,14 @@
     max-width: 100%;
     overflow: hidden;
     position: absolute;
+    right: 137px;
     top: 3.5725rem;
     z-index: 100;
   }
 
   .extensions-drawer.is-compact {
     width: 100%;
+    right: 0px;
   }
 
   .extensions-item {
