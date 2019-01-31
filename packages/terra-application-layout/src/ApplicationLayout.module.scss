@@ -76,16 +76,28 @@
     background-color: green;
     display: flex;
     max-height: calc(100% - 3.5725rem);
+    max-width: 100%;
+    overflow: hidden;
     position: absolute;
     top: 3.5725rem;
-    width: 100%;
     z-index: 100;
   }
 
+  .extensions-drawer.is-compact {
+    width: 100%;
+  }
+
   .extensions-item {
+    align-items: center;
     background-color: orange;
+    border-radius: 10px;
+    border: 2px solid green;
     cursor: pointer;
+    display: flex;
     height: 3.5725rem;
+    justify-content: center;
+    outline: none;
+    overflow: hidden;
     width: 3.5725rem;
   }
 

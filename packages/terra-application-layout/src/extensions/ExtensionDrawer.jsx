@@ -96,7 +96,7 @@ class ExtensionDrawer extends React.Component {
     const maxIndex = extensionItems.length - 1;
     return (
       <FocusTrap focusTrapOptions={{ returnFocusOnDeactivate: true }}>
-        <div {...customProps} className={cx('extensions-drawer')}>
+        <div {...customProps} className={cx(['extensions-drawer', { 'is-compact': isSizeCompact(activeBreakpoint) }])}>
           {extensionItems.map((item, index) => {
             const key = `${item.text}-${index}`;
             return (

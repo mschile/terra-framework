@@ -13,6 +13,12 @@ import ActionHeader from 'terra-action-header';
 import { withDisclosureManager } from 'terra-disclosure-manager';
 import { withActiveBreakpoint } from 'terra-breakpoints';
 import DemographicsBanner from 'terra-demographics-banner';
+import IconSearch from 'terra-icon/lib/icon/IconSearch';
+import IconPill from 'terra-icon/lib/icon/IconPill';
+import IconVisualization from 'terra-icon/lib/icon/IconVisualization';
+import IconLightbulb from 'terra-icon/lib/icon/IconLightbulb';
+import IconCalculator from 'terra-icon/lib/icon/IconCalculator';
+import IconTrophy from 'terra-icon/lib/icon/IconTrophy';
 
 import ApplicationLayout, { Utils } from '../../../../ApplicationLayout';
 import Page1Content from './Page1Content';
@@ -213,37 +219,37 @@ class TestApplication extends React.Component {
     const extensionConfig = {
       extensions: [
         {
-          image: <div>0</div>,
+          image: <IconSearch />,
           metaData: { key: '0' },
           onSelect: handleSelect,
           text: '0',
         },
         {
-          image: <div>1</div>,
+          image: <IconPill />,
           metaData: { key: '1' },
           onSelect: handleSelect,
           text: '1',
         },
         {
-          image: <div>2</div>,
+          image: <IconVisualization />,
           metaData: { key: '2' },
           onSelect: handleSelect,
           text: '2',
         },
         {
-          image: <div>3</div>,
+          image: <IconLightbulb />,
           metaData: { key: '3' },
           onSelect: handleSelect,
           text: '3',
         },
         {
-          image: <div>4</div>,
+          image: <IconCalculator />,
           metaData: { key: '4' },
           onSelect: handleSelect,
           text: '4',
         },
         {
-          image: <div>5</div>,
+          image: <IconTrophy />,
           metaData: { key: '5' },
           onSelect: handleSelect,
           text: '5',
