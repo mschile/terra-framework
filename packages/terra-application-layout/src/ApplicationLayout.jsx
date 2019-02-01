@@ -5,6 +5,7 @@ import Overlay from 'terra-overlay';
 import tabbable from 'tabbable';
 import NavigationSideMenu from 'terra-navigation-side-menu';
 import Scroll from 'terra-scroll';
+import { withActiveBreakpoint } from 'terra-breakpoints';
 
 import ApplicationLayoutHeader from './header/_ApplicationLayoutHeader';
 import ApplicationLayoutPropTypes from './utils/propTypes';
@@ -223,7 +224,7 @@ class ApplicationLayout extends React.Component {
 ApplicationLayout.propTypes = propTypes;
 ApplicationLayout.defaultProps = defaultProps;
 
-export default ApplicationLayout;
+export default withActiveBreakpoint(ApplicationLayout);
 
 const Utils = {
   helpers: Helpers,

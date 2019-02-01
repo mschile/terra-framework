@@ -8,10 +8,8 @@ import { injectIntl, intlShape } from 'react-intl';
 import Image from 'terra-image';
 import Avatar from 'terra-avatar';
 import ContentContainer from 'terra-content-container';
-import Button from 'terra-button';
 import ActionHeader from 'terra-action-header';
 import { withDisclosureManager } from 'terra-disclosure-manager';
-import { withActiveBreakpoint } from 'terra-breakpoints';
 import DemographicsBanner from 'terra-demographics-banner';
 import IconSearch from 'terra-icon/lib/icon/IconSearch';
 import IconPill from 'terra-icon/lib/icon/IconPill';
@@ -147,7 +145,7 @@ class TestApplication extends React.Component {
 
   render() {
     const {
-      intl, history, location, disclosureManager, activeBreakpoint,
+      intl, history, location, disclosureManager,
     } = this.props;
     const { checkboxItemEnabled, activeNavigationItem } = this.state;
 
@@ -264,7 +262,6 @@ class TestApplication extends React.Component {
         id="application-layout-test"
       >
         <ApplicationLayout
-          activeBreakpoint={activeBreakpoint}
           nameConfig={nameConfig}
           utilityConfig={utilityConfig}
           extensionConfig={extensionConfig}
@@ -312,4 +309,4 @@ TestApplication.propTypes = {
   intl: intlShape,
 };
 
-export default withActiveBreakpoint(withDisclosureManager(withRouter(injectIntl((TestApplication)))));
+export default withDisclosureManager(withRouter(injectIntl((TestApplication))));
