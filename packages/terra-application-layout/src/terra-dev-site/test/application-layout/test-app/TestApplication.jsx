@@ -218,37 +218,37 @@ class TestApplication extends React.Component {
       extensions: [
         {
           image: <IconSearch />,
-          metaData: { key: '0' },
+          metaData: { key: 'Search' },
           onSelect: handleSelect,
           text: '0',
         },
         {
           image: <IconPill />,
-          metaData: { key: '1' },
+          metaData: { key: 'Pill' },
           onSelect: handleSelect,
           text: '1',
         },
         {
           image: <IconVisualization />,
-          metaData: { key: '2' },
+          metaData: { key: 'Visualization' },
           onSelect: handleSelect,
           text: '2',
         },
         {
           image: <IconLightbulb />,
-          metaData: { key: '3' },
+          metaData: { key: 'Lightbulb' },
           onSelect: handleSelect,
           text: '3',
         },
         {
           image: <IconCalculator />,
-          metaData: { key: '4' },
+          metaData: { key: 'Calculator' },
           onSelect: handleSelect,
           text: '4',
         },
         {
           image: <IconTrophy />,
-          metaData: { key: '5' },
+          metaData: { key: 'Trophy' },
           onSelect: handleSelect,
           text: '5',
         },
