@@ -8,12 +8,18 @@
   }
 
   .menu-panel {
+    background-color: var(--terra-application-layout-menu-panel-panel-background-color, #fff);
     height: 100%;
     overflow: hidden;
     position: absolute;
     top: 0;
     transform: translate3d(-100%, 0, 0);
     transition: transform 0.1s ease-out;
+    width: var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem));
+
+    @include terra-mq-medium-up {
+      width: var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem);
+    } 
   }
 
   .application-layout-body {
@@ -33,13 +39,7 @@
   }
 
   .menu-is-open > .menu-panel {
-    background-color: var(--terra-application-layout-menu-panel-panel-background-color, #fff);
     transform: translate3d(0, 0, 0);
-    width: var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem));
-
-    @include terra-mq-medium-up {
-      width: var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem);
-    } 
   }
 
   .menu-is-open > .application-layout-body {
@@ -49,10 +49,6 @@
       transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem), 0, 0);
     } 
   }
-
-  // .menu-panel[aria-hidden='true'] {
-  //   visibility: hidden;
-  // }
 
   .primary-navigation-menu {
     background-color: var(--terra-navigation-menu-background-color, transparent);
