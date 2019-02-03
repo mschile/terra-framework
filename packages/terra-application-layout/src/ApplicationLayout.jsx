@@ -101,11 +101,14 @@ class ApplicationLayout extends React.Component {
   constructor(props) {
     super(props);
 
+    this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
     this.setMenuPanelNode = this.setMenuPanelNode.bind(this);
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
     this.handleExtensionToggle = this.handleExtensionToggle.bind(this);
     this.handleNavigationItemSelection = this.handleNavigationItemSelection.bind(this);
     this.renderNavigationMenu = this.renderNavigationMenu.bind(this);
+
+    this.hideMenu = true;
 
     this.state = {
       menuIsOpen: false,
@@ -113,21 +116,15 @@ class ApplicationLayout extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { menuIsOpen } = this.state;
+  componentDidMount() {
+    if (this.menuPanelNode) {
+      this.menuPanelNode.addEventListener('transitionend', this.handleTransitionEnd);
+    }
+  }
 
-    if (menuIsOpen && !prevState.menuIsOpen) {
-      if (tabbable(this.menuPanelNode)[0]) {
-        tabbable(this.menuPanelNode)[0].focus();
-      }
-    } else if (!menuIsOpen && prevState.menuIsOpen) {
-      // Sends focus back to the application layout header toggle button if it exists
-      if (document.querySelector('button[data-application-header-toggle]')) {
-        document.querySelector('button[data-application-header-toggle]').focus();
-        // Otherwise, we'll send focus back to first interactable element in the main panel
-      } else if (tabbable(document.querySelector('[data-terra-application-layout-main]'))[0]) {
-        tabbable(document.querySelector('[data-terra-application-layout-main]'))[0].focus();
-      }
+  componentWillUnmount() {
+    if (this.menuPanelNode) {
+      this.menuPanelNode.removeEventListener('transitionend', this.handleTransitionEnd);
     }
   }
 
@@ -156,6 +153,27 @@ class ApplicationLayout extends React.Component {
     this.setState(state => ({
       extensionIsOpen: !state.extensionIsOpen,
     }));
+  }
+
+  handleTransitionEnd() {
+    if (!this.state.menuIsOpen) {
+      this.menuPanelNode.style.visibility = 'hidden';
+      this.hideMenu = true;
+
+      // Sends focus back to the application layout header toggle button if it exists
+      if (document.querySelector('button[data-application-header-toggle]')) {
+        document.querySelector('button[data-application-header-toggle]').focus();
+        // Otherwise, we'll send focus back to first interactable element in the main panel
+      } else if (tabbable(document.querySelector('[data-terra-application-layout-main]'))[0]) {
+        tabbable(document.querySelector('[data-terra-application-layout-main]'))[0].focus();
+      }
+    } else {
+      this.hideMenu = false;
+
+      if (tabbable(this.menuPanelNode)[0]) {
+        tabbable(this.menuPanelNode)[0].focus();
+      }
+    }
   }
 
   renderNavigationMenu() {
@@ -192,27 +210,31 @@ class ApplicationLayout extends React.Component {
     const extensions = createExtensions(extensionConfig, activeBreakpoint, extensionIsOpen, this.handleExtensionToggle);
     const extensionDrawer = createExtensionDrawer(extensionConfig, activeBreakpoint, extensionIsOpen, this.handleExtensionToggle);
 
+    if (this.menuPanelNode) {
+      this.menuPanelNode.style.visibility = '';
+    }
+
     return (
-      <div className={cx('application-layout-container')}>
-        <ApplicationLayoutHeader
-          activeBreakpoint={activeBreakpoint}
-          nameConfig={nameConfig}
-          utilityConfig={utilityConfig}
-          extensions={extensions}
-          navigationItems={navigationItems}
-          navigationItemAlignment={navigationAlignment}
-          activeNavigationItemKey={activeNavigationItemKey}
-          onSelectNavigationItem={onSelectNavigationItem}
-          onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
-        />
-        {extensionDrawer}
-        <div className={cx(['application-layout-body', { 'menu-is-open': menuIsOpen }])}>
-          <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? 'true' : null} ref={this.setMenuPanelNode}>
-            {isCompact && navigationItems.length ? this.renderNavigationMenu() : undefined}
-          </div>
+      <div className={cx(['application-layout-container', { 'menu-is-open': menuIsOpen }])}>
+        <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? true : null} ref={this.setMenuPanelNode} style={{ visibility: (this.hideMenu && !menuIsOpen) ? 'hidden' : 'visible' }}>
+          {isCompact && navigationItems.length ? this.renderNavigationMenu() : undefined}
+        </div>
+        <div className={cx(['application-layout-body'])} aria-hidden={menuIsOpen ? true : null}>
+          <Overlay isRelativeToContainer onRequestClose={this.handleMenuToggle} isOpen={menuIsOpen} backgroundStyle="dark" />
+          <ApplicationLayoutHeader
+            activeBreakpoint={activeBreakpoint}
+            nameConfig={nameConfig}
+            utilityConfig={utilityConfig}
+            extensions={extensions}
+            navigationItems={navigationItems}
+            navigationItemAlignment={navigationAlignment}
+            activeNavigationItemKey={activeNavigationItemKey}
+            onSelectNavigationItem={onSelectNavigationItem}
+            onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
+          />
+          {extensionDrawer}
           <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>
             <Overlay isRelativeToContainer onRequestClose={event => event.stopPropagation()} isOpen={extensionIsOpen} backgroundStyle="dark" style={{ zIndex: '7000' }} />
-            <Overlay isRelativeToContainer onRequestClose={this.handleMenuToggle} isOpen={menuIsOpen} backgroundStyle="dark" />
             {children}
           </main>
         </div>

@@ -2,65 +2,57 @@
 
 :local {
   .application-layout-container {
+    height: 100%;
+    position: relative;
+    width: 100%;
+  }
+
+  .menu-panel {
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    transform: translate3d(-100%, 0, 0);
+    transition: transform 0.1s ease-out;
+  }
+
+  .application-layout-body {
     display: flex;
     flex-direction: column;
     height: 100%;
     position: relative;
-    width: 100%;
-  }
-
-  .application-layout-body {
-    height: 100%;
-    overflow: hidden;
-    position: relative;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.1s ease-out;
     width: 100%;
   }
 
   .content {
+    flex: 1 1 auto;
     height: 100%;
     overflow: auto;
-    position: absolute;
-    width: 100%;
-    z-index: 0;
-  }
-
-  .menu-panel {
-    background-color: var(--terra-application-layout-menu-panel-panel-background-color, #fff);
-    display: none;
-    height: 100%;
-    overflow: hidden;
-    position: absolute;
-    z-index: 5000;
   }
 
   .menu-is-open > .menu-panel {
-    display: block;
-    left: 0;
-    top: 0;
+    background-color: var(--terra-application-layout-menu-panel-panel-background-color, #fff);
+    transform: translate3d(0, 0, 0);
     width: var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem));
 
     @include terra-mq-medium-up {
-      box-shadow: 0.07143rem 0 0.3571rem var(--terra-application-layout-menu-panel-panel-shadow-color, #1c1f21);
       width: var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem);
     } 
+  }
 
-    @include terra-mq-large-up {
-      border-right: 0.07143rem solid var(--terra-application-layout-menu-panel-panel-border-color, #d3d4d5);
-      box-shadow: none;
-      transition: none;
-      width: calc(0.07143rem + #{var(--terra-application-layout-menu-panel-panel-width-large, 18.571rem)});
+  .menu-is-open > .application-layout-body {
+    transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem), 0, 0));
+
+    @include terra-mq-medium-up {
+      transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem), 0, 0);
     } 
   }
 
-  .menu-is-open > .content {
-    @include terra-mq-large-up {
-      width: calc(100% - #{var(--terra-application-layout-menu-panel-panel-width-large, 18.571rem)} - 0.07143rem);
-    } 
-  }
-
-  .menu-panel[aria-hidden='true'] {
-    visibility: hidden;
-  }
+  // .menu-panel[aria-hidden='true'] {
+  //   visibility: hidden;
+  // }
 
   .primary-navigation-menu {
     background-color: var(--terra-navigation-menu-background-color, transparent);
