@@ -34,7 +34,6 @@
     "react-onclickoutside": "^6.7.1",
     "react-router-dom": "^4.2.2",
     "resize-observer-polyfill": "^1.4.1",
-    "tabbable": "^3.1.1",
     "terra-action-header": "^1.14.0",
     "terra-application-header-layout": "^2.20.0",
     "terra-application-menu-layout": "^2.15.0",

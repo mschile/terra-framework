@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Overlay from 'terra-overlay';
-import tabbable from 'tabbable';
 import NavigationSideMenu from 'terra-navigation-side-menu';
 import Scroll from 'terra-scroll';
 import { withActiveBreakpoint } from 'terra-breakpoints';
@@ -160,20 +159,8 @@ class ApplicationLayout extends React.Component {
     if (!this.state.menuIsOpen) {
       this.menuPanelNode.style.visibility = 'hidden';
       this.hideMenu = true;
-
-      // Sends focus back to the application layout header toggle button if it exists
-      if (document.querySelector('button[data-application-header-toggle]')) {
-        document.querySelector('button[data-application-header-toggle]').focus();
-        // Otherwise, we'll send focus back to first interactable element in the main panel
-      } else if (tabbable(document.querySelector('[data-terra-application-layout-main]'))[0]) {
-        tabbable(document.querySelector('[data-terra-application-layout-main]'))[0].focus();
-      }
     } else {
       this.hideMenu = false;
-
-      if (tabbable(this.menuPanelNode)[0]) {
-        tabbable(this.menuPanelNode)[0].focus();
-      }
     }
   }
 
@@ -184,8 +171,7 @@ class ApplicationLayout extends React.Component {
 
     return (
       <div className={cx('primary-navigation-menu')}>
-        <Overlay isRelativeToContainer onRequestClose={this.handleMenuToggle} isOpen backgroundStyle="clear" style={{ width: '100vw', zIndex: '1' }} />
-        <Scroll style={{ zIndex: '2' }}>
+        <Scroll>
           <NavigationSideMenu
             menuItems={[{
               childKeys: navigationItems.map(item => item.key),
@@ -212,47 +198,59 @@ class ApplicationLayout extends React.Component {
     const extensions = createExtensions(extensionConfig, activeBreakpoint, extensionIsOpen, this.handleExtensionToggle);
     const extensionDrawer = createExtensionDrawer(extensionConfig, activeBreakpoint, extensionIsOpen, this.handleExtensionToggle);
 
+    /**
+     * Reset visibility to ensure menu will be visible if the menu is being opened. If it's not being opened, the visibility will
+     * be immediately set to hidden when the menuPanel is re
+     */
     if (this.menuPanelNode) {
       this.menuPanelNode.style.visibility = '';
     }
 
     return (
       <div className={cx(['application-layout-container', { 'menu-is-open': menuIsOpen }])}>
-        <div className={cx(['application-layout-body'])} aria-hidden={menuIsOpen ? true : null}>
-          <Overlay isRelativeToContainer isOpen={menuIsOpen} backgroundStyle="dark" />
-          <ApplicationLayoutHeader
-            activeBreakpoint={activeBreakpoint}
-            nameConfig={nameConfig}
-            utilityConfig={utilityConfig}
-            extensions={extensions}
-            navigationItems={navigationItems}
-            navigationItemAlignment={navigationAlignment}
-            activeNavigationItemKey={activeNavigationItemKey}
-            onSelectNavigationItem={onSelectNavigationItem}
-            onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
-          />
-          {extensionDrawer}
-          <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>
-            <Overlay isRelativeToContainer onRequestClose={event => event.stopPropagation()} isOpen={extensionIsOpen} backgroundStyle="dark" style={{ zIndex: '7000' }} />
-            {children}
-          </main>
-        </div>
-        <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? true : null} ref={this.setMenuPanelNode} style={{ visibility: (this.hideMenu && !menuIsOpen) ? 'hidden' : 'visible' }}>
-          {isCompact && navigationItems.length ? (
-            <FocusTrap
-              active={menuIsOpen}
-              focusTrapOptions={{
-                escapeDeactivates: false,
-                returnFocusOnDeactivate: false,
-              }}
-              style={{
-                height: '100%',
-                width: '100%',
-              }}
-            >
-              {this.renderNavigationMenu()}
-            </FocusTrap>
-          ) : undefined}
+        <div className={cx('transform-container')}>
+          <div className={cx('body')} aria-hidden={menuIsOpen ? true : null}>
+            <Overlay isRelativeToContainer isOpen={menuIsOpen} backgroundStyle="dark" />
+            <ApplicationLayoutHeader
+              activeBreakpoint={activeBreakpoint}
+              nameConfig={nameConfig}
+              utilityConfig={utilityConfig}
+              extensions={extensions}
+              navigationItems={navigationItems}
+              navigationItemAlignment={navigationAlignment}
+              activeNavigationItemKey={activeNavigationItemKey}
+              onSelectNavigationItem={onSelectNavigationItem}
+              onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
+            />
+            {extensionDrawer}
+            <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>
+              <Overlay isRelativeToContainer onRequestClose={event => event.stopPropagation()} isOpen={extensionIsOpen} backgroundStyle="dark" style={{ zIndex: '7000' }} />
+              {children}
+            </main>
+          </div>
+          <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? true : null} ref={this.setMenuPanelNode} style={{ visibility: (this.hideMenu && !menuIsOpen) ? 'hidden' : 'visible' }}>
+            {isCompact && navigationItems.length ? (
+              <FocusTrap
+                active={menuIsOpen}
+                focusTrapOptions={{
+                  escapeDeactivates: true,
+                  returnFocusOnDeactivate: true,
+                  clickOutsideDeactivates: true,
+                  onDeactivate: () => {
+                    if (this.state.menuIsOpen) {
+                      this.setState({ menuIsOpen: false });
+                    }
+                  },
+                }}
+                style={{
+                  height: '100%',
+                  width: '100%',
+                }}
+              >
+                {this.renderNavigationMenu()}
+              </FocusTrap>
+            ) : undefined}
+          </div>
         </div>
       </div>
     );

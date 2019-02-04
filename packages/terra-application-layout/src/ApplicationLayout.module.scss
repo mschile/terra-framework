@@ -8,14 +8,28 @@
     width: 100%;
   }
 
+  .transform-container {
+    height: 100%;
+    overflow: visible;
+    position: relative;
+    transition: transform 0.2s ease-in-out;
+    width: 100%;
+  }
+
+  .menu-is-open > .transform-container {
+    transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem), 0, 0));
+
+    @include terra-mq-medium-up {
+      transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem), 0, 0);
+    } 
+  }
+
   .menu-panel {
     background-color: var(--terra-application-layout-menu-panel-panel-background-color, #fff);
     height: 100%;
-    overflow: visible;  // Overlay
     position: absolute;
     top: 0;
     transform: translate3d(-100%, 0, 0);
-    transition: transform 0.1s ease-out;
     width: var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem));
 
     @include terra-mq-medium-up {
@@ -23,32 +37,19 @@
     } 
   }
 
-  .application-layout-body {
+  .body {
     display: flex;
     flex-direction: column;
     height: 100%;
     position: relative;
-    transform: translate3d(0, 0, 0);
-    transition: transform 0.1s ease-out;
     width: 100%;
   }
 
   .content {
+    display: block;
     flex: 1 1 auto;
     height: 100%;
     overflow: auto;
-  }
-
-  .menu-is-open > .menu-panel {
-    transform: translate3d(0, 0, 0);
-  }
-
-  .menu-is-open > .application-layout-body {
-    transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem), 0, 0));
-
-    @include terra-mq-medium-up {
-      transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem), 0, 0);
-    } 
   }
 
   .primary-navigation-menu {
