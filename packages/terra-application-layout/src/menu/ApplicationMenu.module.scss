@@ -1,0 +1,47 @@
+:local {
+  .application-menu {
+    background-color: var(--terra-navigation-menu-background-color, transparent);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    position: relative;
+
+    > .header,
+    > .footer {
+      flex: 0 0 auto;
+      max-height: 40%;
+    }
+
+    > .body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+
+      > .content {
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+
+        > .normalizer {
+          height: 100%;
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+          -ms-overflow-style: -ms-autohiding-scrollbar; // Ensures scrollbars do not affect width in IE10
+          position: absolute;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .application-menu-shadow-element {
+    box-shadow: inset -7px 0 9px -7px rgba(0, 0, 0, 0.4);
+    height: 100%;
+    overflow: visible;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 9px;
+  }
+}

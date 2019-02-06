@@ -12,7 +12,7 @@
     height: 100%;
     overflow: visible;
     position: relative;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.15s ease-out;
     width: 100%;
   }
 
@@ -25,7 +25,7 @@
   }
 
   .menu-panel {
-    background-color: var(--terra-application-layout-menu-panel-panel-background-color, #fff);
+    background-color: var(--terra-application-layout-menu-panel-panel-background-color, rgba(17, 22, 25, 0.3));
     height: 100%;
     position: absolute;
     top: 0;
@@ -51,12 +51,6 @@
     height: 100%;
     overflow: auto;
   }
-
-  .primary-navigation-menu {
-    background-color: var(--terra-navigation-menu-background-color, transparent);
-    height: 100%;
-    position: relative;
-  } 
 
   .extensions-layout {
     display: flex;

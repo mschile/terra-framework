@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Overlay from 'terra-overlay';
-import NavigationSideMenu from 'terra-navigation-side-menu';
-import Scroll from 'terra-scroll';
 import { withActiveBreakpoint } from 'terra-breakpoints';
 import FocusTrap from 'focus-trap-react';
 
@@ -13,6 +11,7 @@ import Helpers, { isSizeCompact } from './utils/helpers';
 import UtilityHelpers from './utils/utilityHelpers';
 import ExtensionDrawer from './extensions/ExtensionDrawer';
 import ExtensionBar from './extensions/ExtensionBar';
+import ApplicationMenu from './menu/_ApplicationMenu';
 
 import 'terra-base/lib/baseStyles';
 
@@ -117,14 +116,14 @@ class ApplicationLayout extends React.Component {
   }
 
   componentDidMount() {
-    if (this.menuPanelNode) {
-      this.menuPanelNode.addEventListener('transitionend', this.handleTransitionEnd);
+    if (this.transformContainerRef) {
+      this.transformContainerRef.addEventListener('transitionend', this.handleTransitionEnd);
     }
   }
 
   componentWillUnmount() {
-    if (this.menuPanelNode) {
-      this.menuPanelNode.removeEventListener('transitionend', this.handleTransitionEnd);
+    if (this.transformContainerRef) {
+      this.transformContainerRef.removeEventListener('transitionend', this.handleTransitionEnd);
     }
   }
 
@@ -132,13 +131,13 @@ class ApplicationLayout extends React.Component {
     this.menuPanelNode = node;
   }
 
-  handleNavigationItemSelection(event, data) {
+  handleNavigationItemSelection(selectedChildKey) {
     this.setState({
       menuIsOpen: false,
     }, () => {
       const { onSelectNavigationItem } = this.props;
       if (onSelectNavigationItem) {
-        onSelectNavigationItem(data.selectedChildKey);
+        onSelectNavigationItem(selectedChildKey);
       }
     });
   }
@@ -170,21 +169,11 @@ class ApplicationLayout extends React.Component {
     } = this.props;
 
     return (
-      <div className={cx('primary-navigation-menu')}>
-        <Scroll>
-          <NavigationSideMenu
-            menuItems={[{
-              childKeys: navigationItems.map(item => item.key),
-              key: 'primary_navigation_menu',
-              text: 'Application Layout Primary Navigation Menu', // Text is a required value here, but it's never actually rendered
-              isRootMenu: true,
-            }].concat(navigationItems)}
-            selectedMenuKey="primary_navigation_menu"
-            selectedChildKey={activeNavigationItemKey}
-            onChange={this.handleNavigationItemSelection}
-          />
-        </Scroll>
-      </div>
+      <ApplicationMenu
+        navigationItems={navigationItems}
+        activeNavigationItemKey={activeNavigationItemKey}
+        onSelectNavigationItem={this.handleNavigationItemSelection}
+      />
     );
   }
 
@@ -208,9 +197,8 @@ class ApplicationLayout extends React.Component {
 
     return (
       <div className={cx(['application-layout-container', { 'menu-is-open': menuIsOpen }])}>
-        <div className={cx('transform-container')}>
+        <div className={cx('transform-container')} ref={(ref) => { this.transformContainerRef = ref; }}>
           <div className={cx('body')} aria-hidden={menuIsOpen ? true : null}>
-            <Overlay isRelativeToContainer isOpen={menuIsOpen} backgroundStyle="dark" />
             <ApplicationLayoutHeader
               activeBreakpoint={activeBreakpoint}
               nameConfig={nameConfig}
@@ -227,8 +215,9 @@ class ApplicationLayout extends React.Component {
               <Overlay isRelativeToContainer onRequestClose={event => event.stopPropagation()} isOpen={extensionIsOpen} backgroundStyle="dark" style={{ zIndex: '7000' }} />
               {children}
             </main>
+            <Overlay isRelativeToContainer isOpen={menuIsOpen} backgroundStyle="clear" />
           </div>
-          <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? true : null} ref={this.setMenuPanelNode} style={{ visibility: (this.hideMenu && !menuIsOpen) ? 'hidden' : 'visible' }}>
+          <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? true : null} ref={this.setMenuPanelNode} style={this.hideMenu && !menuIsOpen ? { visibility: 'hidden' } : null}>
             {isCompact && navigationItems.length ? (
               <FocusTrap
                 active={menuIsOpen}
