@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import Scroll from 'terra-scroll';
 import NavigationSideMenu from 'terra-navigation-side-menu';
 
 import styles from './ApplicationMenu.module.scss';
@@ -26,12 +25,10 @@ const ApplicationMenu = ({
 
   return (
     <div className={cx('application-menu')}>
-      <div className={cx('header')}>
-        <div>Header</div>
-      </div>
       <div className={cx('body')}>
         <div className={cx('content')}>
           <div className={cx('normalizer')}>
+            <div style={{ height: '15rem', backgroundColor: '#2a4b77', color: 'white' }} />
             <NavigationSideMenu
               menuItems={[{
                 childKeys: navigationItems.map(item => item.key).concat(['settings']),
@@ -61,7 +58,7 @@ const ApplicationMenu = ({
         </div>
       </div>
       <div className={cx('footer')}>
-        <div>Footer</div>
+        <div style={{ height: '5rem', backgroundColor: '#2a4b77', color: 'white' }} />
       </div>
       <div className={cx('application-menu-shadow-element')} />
     </div>

@@ -68,6 +68,9 @@ const propTypes = {
    * A function executed upon selection of a navigation item.
    */
   onSelectNavigationItem: PropTypes.func,
+  onSelectSettings: PropTypes.func,
+  onSelectHelp: PropTypes.func,
+  onSelectLogout: PropTypes.func,
   /**
    * The configuration values for the ApplicationUtility component.
    */
