@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+import Avatar from 'terra-avatar';
+
 import 'terra-base/lib/baseStyles';
 
 import styles from './UserData.module.scss';
@@ -20,13 +22,15 @@ const propTypes = {
   /**
    * The photo to be displayed next to the userName and userDetail.
    */
-  userPhoto: PropTypes.element,
+  userPhoto: PropTypes.string,
+  userInitials: PropTypes.string,
 };
 
 const UserData = ({
   userDetail,
   userName,
   userPhoto,
+  userInitials,
   ...customProps
 }) => {
   const userClassNames = cx(['user-data', customProps.className]);
@@ -43,7 +47,7 @@ const UserData = ({
 
   return (
     <div {...customProps} className={userClassNames}>
-      {!!userPhoto && React.cloneElement(userPhoto, { className: cx('photo') })}
+      {!!userPhoto && <Avatar image={userPhoto} initials={userInitials} alt={userName || ''} className={cx('photo')} />}
       {userInfo}
     </div>
   );

@@ -11,7 +11,7 @@ import Popup from 'terra-popup';
 
 import ApplicationTabs from './tabs/_ApplicationTabs';
 import ApplicationLayoutPropTypes from '../utils/propTypes';
-import Helpers from '../utils/helpers';
+import { isSizeCompact } from '../utils/helpers';
 
 import 'terra-base/lib/baseStyles';
 import styles from './ApplicationLayoutHeader.module.scss';
@@ -63,6 +63,12 @@ const propTypes = {
    * @private DisclosureManagerDelegate instance automatically provided by a DisclosureManager ancestor.
    */
   disclosureManager: disclosureManagerShape,
+  userConfig: PropTypes.object,
+  heroConfig: PropTypes.object,
+  onSelectSettings: PropTypes.func,
+  onSelectHelp: PropTypes.func,
+  onSelectLogout: PropTypes.func,
+  onSelectUser: PropTypes.func,
 };
 
 const defaultProps = {
@@ -173,7 +179,7 @@ class ApplicationHeader extends React.Component {
   renderUtilities() {
     const { utilityConfig, activeBreakpoint } = this.props;
 
-    const isCompact = Helpers.isSizeCompact(activeBreakpoint);
+    const isCompact = isSizeCompact(activeBreakpoint);
 
     if (utilityConfig) {
       return (

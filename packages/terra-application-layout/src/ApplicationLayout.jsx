@@ -48,7 +48,8 @@ const propTypes = {
   extensionConfig: ApplicationLayoutPropTypes.extensionConfigPropType,
   userConfig: PropTypes.object,
   utilityConfig: PropTypes.object,
-  heroConfig: PropTypes.object,
+  smallHeroConfig: PropTypes.object,
+  largeHeroConfig: PropTypes.object,
   navigationAlignment: ApplicationLayoutPropTypes.navigationAlignmentPropType,
   navigationItems: ApplicationLayoutPropTypes.navigationItemsPropType,
   activeNavigationItemKey: PropTypes.string,
@@ -57,7 +58,6 @@ const propTypes = {
   onSelectHelp: PropTypes.func,
   onSelectLogout: PropTypes.func,
   onSelectUser: PropTypes.func,
-  onSelectHero: PropTypes.func,
   children: PropTypes.node,
   /**
    * @private
@@ -95,7 +95,6 @@ class ApplicationLayout extends React.Component {
     this.handleHelpSelection = this.handleHelpSelection.bind(this);
     this.handleLogoutSelection = this.handleLogoutSelection.bind(this);
     this.handleUserSelection = this.handleUserSelection.bind(this);
-    this.handleHeroSelection = this.handleHeroSelection.bind(this);
 
     this.hideMenu = true;
 
@@ -240,19 +239,18 @@ class ApplicationLayout extends React.Component {
 
   renderNavigationMenu() {
     const {
-      userConfig, heroConfig, navigationItems, activeNavigationItemKey,
-      onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser, onSelectHero,
+      userConfig, smallHeroConfig, navigationItems, activeNavigationItemKey,
+      onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser,
     } = this.props;
 
     return (
       <ApplicationMenu
         userConfig={userConfig}
-        heroConfig={heroConfig}
+        heroConfig={smallHeroConfig}
         onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
         onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
         onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
         onSelectUser={onSelectUser ? this.handleUserSelection : undefined}
-        onSelectHero={onSelectHero ? this.handleHeroSelection : undefined}
         navigationItems={navigationItems}
         activeNavigationItemKey={activeNavigationItemKey}
         onSelectNavigationItem={this.handleNavigationItemSelection}
@@ -262,7 +260,7 @@ class ApplicationLayout extends React.Component {
 
   render() {
     const {
-      nameConfig, utilityConfig, navigationAlignment, navigationItems, extensionConfig, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem, userConfig, heroConfig, onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser, onSelectHero,
+      nameConfig, utilityConfig, navigationAlignment, navigationItems, extensionConfig, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem, userConfig, largeHeroConfig, onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser, onSelectHero,
     } = this.props;
     const { menuIsOpen, extensionIsOpen } = this.state;
 
@@ -293,12 +291,11 @@ class ApplicationLayout extends React.Component {
               onSelectNavigationItem={onSelectNavigationItem}
               onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
               userConfig={userConfig}
-              heroConfig={heroConfig}
+              heroConfig={largeHeroConfig}
               onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
               onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
               onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
               onSelectUser={onSelectUser ? this.handleUserSelection : undefined}
-              onSelectHero={onSelectHero ? this.handleHeroSelection : undefined}      
             />
             {extensionDrawer}
             <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>

@@ -255,17 +255,22 @@ class TestApplication extends React.Component {
         userConfig={{
           name: 'Test User',
           detail: 'User Detail',
-          photo: userAvatar,   
-          component: undefined,                 
+          initials: 'TB',
+          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
         }}
         utilityConfig={{
           title: 'Test User',
-          accessory: userAvatar,  
+          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',  
           component: undefined,    
         }}
-        heroConfig={{
+        smallHeroConfig={{
           title: 'Test User',
-          accessory: userAvatar,
+          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
+          component: undefined,
+        }}
+        largeHeroConfig={{
+          title: 'Test User',
+          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
           component: undefined,
         }}
         navigationItems={navigationItems}
@@ -275,11 +280,10 @@ class TestApplication extends React.Component {
             history.push(navigationItemKey);
           }
         }}
-        onSelectSettings={() => { alert('settings'); }}
-        onSelectHelp={() => { alert('help'); }}
-        onSelectLogout={() => { alert('logout'); }}
-        onSelectUser={() => { alert('user'); }}
-        onSelectHero={() => { alert('hero'); }}
+        onSelectSettings={() => { console.log('settings'); }}
+        onSelectHelp={() => { console.log('help'); }}
+        onSelectLogout={() => { console.log('logout'); }}
+        onSelectUser={() => { console.log('user'); }}
       >
         <ContentContainer
           fill
