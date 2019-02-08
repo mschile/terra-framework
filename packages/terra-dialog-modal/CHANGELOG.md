@@ -4,6 +4,37 @@ Changelog
 Unreleased
 ----------
 
+2.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+2.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Added new variables for css theming
+* Updated terra-core dependencies
+
+1.14.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+1.13.0 - (January 2, 2019)
+------------------
+### Changed
+* Updated dev site examples not have duplicate ids.
+
+1.12.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+1.11.0 - (December 3, 2018)
+------------------
+### Changed
+* Minor dependency bump
+
 1.10.0 - (November 15, 2018)
 ------------------
 ### Changed

@@ -1,6 +1,6 @@
 :local {
   .application-menu {
-    background-color: var(--terra-navigation-menu-background-color, #2a4b77);
+    background-color: var(--terra-application-layout-menu-background-color, transparent);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -9,6 +9,8 @@
 
     > .header,
     > .footer {
+      background-color: var(--terra-application-layout-menu-header-background-color, #0079be);
+      background-image: var(--terra-application-layout-menu-header-background-image);
       flex: 0 0 auto;
       max-height: 40%;
     }
@@ -47,3 +49,4 @@
     width: 9px;
   }
 }
+

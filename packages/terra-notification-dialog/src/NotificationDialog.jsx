@@ -65,10 +65,6 @@ const propTypes = {
    */
   isOpen: PropTypes.bool.isRequired,
   /**
-   * Callback function indicating a close condition was met, should be combined with isOpen for state management.
-   */
-  onRequestClose: PropTypes.func.isRequired,
-  /**
    * A callback function to let the containing component (e.g. modal) to regain focus.
    */
   releaseFocus: PropTypes.func,
@@ -140,18 +136,18 @@ class NotificationDialog extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.isOpen) {
-      if (this.props.requestFocus) {
+      if (!prevProps.isOpen && this.props.requestFocus) {
         this.props.requestFocus();
       }
-    } else if (this.props.releaseFocus) {
+    } else if (prevProps.isOpen && this.props.releaseFocus) {
       this.props.releaseFocus();
     }
   }
 
   componentWillUnmount() {
-    if (this.props.releaseFocus) {
+    if (this.props.isOpen && this.props.releaseFocus) {
       this.props.releaseFocus();
     }
   }
@@ -170,7 +166,6 @@ class NotificationDialog extends React.Component {
       variant,
       customIcon,
       isOpen,
-      onRequestClose,
       releaseFocus,
       requestFocus,
       ...customProps
@@ -189,7 +184,7 @@ class NotificationDialog extends React.Component {
         role="alertdialog"
         classNameModal={notificationDialogClassNames}
         isOpen={this.props.isOpen}
-        onRequestClose={this.props.onRequestClose}
+        onRequestClose={() => {}}
         closeOnEsc={false}
         closeOnOutsideClick={false}
         zIndex="9000"

@@ -227,7 +227,7 @@ class ApplicationHeader extends React.Component {
       extensions,
     } = this.props;
 
-    const isCompact = Helpers.isSizeCompact(activeBreakpoint);
+    const isCompact = isSizeCompact(activeBreakpoint);
 
     let headerLayout;
     if (isCompact) {

@@ -183,9 +183,7 @@ const indexPath = '/page_1';
 const userAvatar = (
   <Avatar
     image={ProfilePicture}
-    variant="user"
     alt="Swanson, Henry"
-    ariaLabel="Swanson, Henry"
     key="user_avatar"
   />
 );
@@ -206,7 +204,7 @@ const userData = {
  */
 const nameConfig = Object.freeze({
   title: 'Example Application',
-  accessory: <Image variant="rounded" src="https://github.com/cerner/terra-core/raw/master/terra.png" height="26px" width="26px" />,
+  accessory: <Image variant="rounded" src="https://github.com/cerner/terra-framework/raw/master/terra.png" height="26px" width="26px" />,
 });
 
 class ExampleApplication extends React.Component {
@@ -243,6 +241,13 @@ class ExampleApplication extends React.Component {
       title: 'Custom Checkbox Item',
       isSelectable: true,
       isSelected: checkboxItemEnabled,
+      isReadOnly: false,
+      parentKey: Utils.utilityHelpers.defaultKeys.MENU,
+    }, {
+      key: 'readonly-item',
+      title: 'Custom ReadOnly Item',
+      isSelectable: true,
+      isReadOnly: true,
       parentKey: Utils.utilityHelpers.defaultKeys.MENU,
     }, {
       key: 'additional-3',

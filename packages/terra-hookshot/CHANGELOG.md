@@ -3,6 +3,38 @@ Changelog
 
 Unreleased
 ----------
+
+5.1.0 - (February 5, 2019)
+------------------
+### Removed
+* Vestigial fixed styling removed and default to absolute. 
+
+5.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated terra-core dependencies
+
+### Changed
+* Removed usage of componentWillReceiveProps
+
+4.17.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+4.16.0 - (January 2, 2019)
+------------------
+### Changed
+* Updated dev site examples to not have duplicate ids.
+* Updated dev site examples to use terra-form-input and terra-form-select to improve accessability.
+
+4.15.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+4.14.0 - (December 3, 2018)
+------------------
 ### Fixed
 * Lint error
 

@@ -3,6 +3,37 @@ Changelog
 
 Unreleased
 ----------
+
+4.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+4.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated terra-core dependencies
+
+### Changed
+* Remove use of componentWillReceiveProps
+
+3.21.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+3.20.0 - (January 2, 2019)
+------------------
+### Changed
+* Removed local timeout values from wdio tests
+
+3.19.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+3.18.0 - (December 3, 2018)
+------------------
 ### Changed
 * Updated examples to consume terra-disclosure-manager v3.x
 

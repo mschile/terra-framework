@@ -4,6 +4,37 @@ Changelog
 Unreleased
 ----------
 
+2.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+2.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated variable names to match new naming standard
+* Updated terra-core dependencies
+
+1.16.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+1.15.0 - (January 2, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+1.14.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+1.13.0 - (December 3, 2018)
+------------------
+### Changed
+* Minor dependency bump
+
 1.12.0 - (November 15, 2018)
 ------------------
 ### Changed

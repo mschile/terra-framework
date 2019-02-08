@@ -4,6 +4,36 @@ Changelog
 Unreleased
 ----------
 
+3.1.0 - (February 5, 2019)
+------------------
+### Fixed
+* Hiding overflow on content region to correct flexbox layout
+
+3.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated terra-core dependencies
+
+2.19.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+2.18.0 - (January 2, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+2.17.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+2.16.0 - (December 3, 2018)
+------------------
+### Changed
+* Minor dependency bump
+
 2.15.0 - (November 15, 2018)
 ------------------
 ### Changed

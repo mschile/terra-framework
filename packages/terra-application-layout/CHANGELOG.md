@@ -3,12 +3,54 @@ Changelog
 
 Unreleased
 ----------
+
+4.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+4.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated variable names to match new naming standard
+* Added new variables for css theming
+* Removed variables for css theming
+* Updated terra-core dependencies
+
+### Changed
+* Removed use of componentWillReceiveProps
+* Update terra-avatar to 2.0
+
+3.3.0 - (January 5, 2019)
+------------------
+### Added
+* Wdio test added for read-only menu item
+
+### Changed
+* Increase specificity of UserData photo CSS class
+
+3.2.0 - (January 2, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+3.1.0 - (December 5, 2018)
+------------------
+### Changed
+* Update examples to use terra-framework's checked in image
+* Minor dependency bump
+
+3.0.0 - (December 3, 2018)
+------------------
+### Breaking Change
+* Updated ApplicationLayout and related components to interface directly with a parent DisclosureManager.
+* Removed instances of the ApplicationLayout and related components injecting an `app` prop into child components.
+
 ### Added
 * Added missing ar translations.
 
-### Breaking Change
-* Updated ApplicationLayout and related components to interface directly with a parent DisclosureManager. 
-* Removed instances of the ApplicationLayout and related components injecting an `app` prop into child components.
+### Changed
+* Wdio tests changed to use themeCombinationOfCustomProperties
 
 2.22.1 - (November 15, 2018)
 ------------------

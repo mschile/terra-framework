@@ -3,6 +3,37 @@ Changelog
 
 Unreleased
 ----------
+
+4.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+4.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated terra-core dependencies
+
+### Changed
+* Remove the use of componentWillReceiveProps
+
+3.3.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+3.2.0 - (January 2, 2019)
+------------------
+### Changed
+* Updated readme so headings have logical nesting.
+
+3.1.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+3.0.0 - (December 3, 2018)
+------------------
 ### Breaking Change
 * Removed instances of the NavigationLayout and related components injecting an `app` prop into child components.
 

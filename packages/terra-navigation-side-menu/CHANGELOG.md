@@ -4,6 +4,45 @@ Changelog
 Unreleased
 ----------
 
+2.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+2.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated variable names to match new naming standard
+* Added new variables for css theming
+* Removed variables for css theming
+* Updated terra-core dependencies
+
+### Changed
+* Remove use of componentWillReceiveProps
+
+1.20.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+1.19.0 - (January 2, 2019)
+------------------
+### Fixed
+* Updated Data-menu-item attribute value of Menuitem to Unique key value
+
+### Added
+* Add optional toolbar prop that displays below the side menu action header
+
+1.18.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+1.17.0 - (December 3, 2018)
+------------------
+### Changed
+* Wdio tests changed to use themeCombinationOfCustomProperties
+
 1.16.0 - (November 15, 2018)
 ------------------
 ### Changed

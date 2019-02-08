@@ -3,6 +3,34 @@ ChangeLog
 
 Unreleased
 ----------
+
+4.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+4.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated terra-core dependencies
+
+3.3.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+3.2.0 - (January 2, 2019)
+------------------
+### Fixed
+* Corrected state management during update lifecycle to prevent undesired disclosure closures
+
+3.1.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+
+3.0.0 - (December 3, 2018)
+------------------
 ### Breaking Change
 * Added Context-based API for consumer-facing DisclosureManager APIs
 * Removed injection of `app` prop into child/disclosure components.

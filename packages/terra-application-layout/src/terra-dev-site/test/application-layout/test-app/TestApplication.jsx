@@ -10,7 +10,6 @@ import Avatar from 'terra-avatar';
 import ContentContainer from 'terra-content-container';
 import ActionHeader from 'terra-action-header';
 import { withDisclosureManager } from 'terra-disclosure-manager';
-import DemographicsBanner from 'terra-demographics-banner';
 import IconSearch from 'terra-icon/lib/icon/IconSearch';
 import IconPill from 'terra-icon/lib/icon/IconPill';
 import IconVisualization from 'terra-icon/lib/icon/IconVisualization';
@@ -288,17 +287,10 @@ class TestApplication extends React.Component {
         <ContentContainer
           fill
           header={(
-            <DemographicsBanner
-              age="25 Years"
-              dateOfBirth="May 9, 1993"
-              gender="Male"
-              gestationalAge="April 5, 2016"
-              identifiers={{ MRN: 12343, REA: '3JSDA' }}
-              photo={<Image alt="My Cat" src="http://lorempixel.com/50/50/animals/7/" />}
-              personName="Johnathon Doe"
-              postMenstrualAge="April 7, 2016"
-              preferredFirstName="John"
-            />
+            <div style={{ height: '50px', backgroundColor: 'navyblue' }}>
+              <h2>Demographics here</h2>
+            </div>
+            
           )}
         >
           <Switch>

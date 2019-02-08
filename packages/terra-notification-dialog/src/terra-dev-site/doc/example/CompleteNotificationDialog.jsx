@@ -3,7 +3,7 @@ import Button from 'terra-button';
 import NotificationDialog, { NotificationDialogVariants } from '../../../NotificationDialog';
 
 const clickOK = () => {
-  alert('You clicked OK'); // eslint-disable-line no-alert
+  console.log('You clicked OK'); // eslint-disable-line no-console
 };
 
 class CompleteNotificationDialog extends React.Component {
@@ -32,7 +32,6 @@ class CompleteNotificationDialog extends React.Component {
         <NotificationDialog
           variant={NotificationDialogVariants.ALERT}
           isOpen={this.state.isOpen}
-          onRequestClose={this.handleCloseModal}
           title="Make sure that the title relates directly to the choices."
           message="The Main Instruction is text used to provide more detail or define terminology. Don’t repeat the title verbatim."
           primaryAction={{

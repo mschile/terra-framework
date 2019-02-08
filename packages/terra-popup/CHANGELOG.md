@@ -3,6 +3,56 @@ Changelog
 
 Unreleased
 ----------
+
+5.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+5.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated variable names to match new naming standard
+* Added new variables for css theming
+* Removed variables for css theming
+* Updated terra-core dependencies
+
+### Fixed
+* Removed 'close' class from `_PopupContent` button
+* Added text prop to `_PopupContent` button for conversion to aria-label in Button component
+
+### Added
+* react-intl dependency added for i18n translations
+* intl prop added to `_PopupContent` for i18n message formatting
+
+### Changed
+* Remove use of componentWillReceiveProps
+
+4.22.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+4.21.0 - (January 2, 2019)
+------------------
+### Changed
+* Prevent click events from propagating from popup overlay
+
+4.20.0 - (December 5, 2018)
+------------------
+### Added
+* Added onClickOutside detection to popup overlay
+
+### Changed
+* Replaced hookshot content component with a version that does not use onClickOutside HOC
+* Disabled focus trap when popup is open and users click outside of the popup
+
+4.19.1 - (December 3, 2018)
+------------------
+### Changed
+* Wdio tests changed to use themeCombinationOfCustomProperties
+* Replaced use of componentWillMount with componentDidMount
+
 ### Fixed
 * Fixed preventDefault error
 

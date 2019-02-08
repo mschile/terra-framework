@@ -3,6 +3,41 @@ Changelog
 
 Unreleased
 ----------
+
+3.1.0 - (February 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+3.0.0 - (January 25, 2019)
+------------------
+### Breaking Change
+* Updated variable names to match new naming standard
+* Added new variables for css theming
+* Removed variables for css theming
+* Updated terra-core dependencies
+
+2.24.0 - (January 5, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+2.23.0 - (January 2, 2019)
+------------------
+### Changed
+* Minor dependency update
+
+2.22.0 - (December 5, 2018)
+------------------
+### Changed
+* Minor dependency update
+* Update example to use terra-framework's checked in image
+
+2.21.0 - (December 3, 2018)
+------------------
+### Changed
+* Wdio tests changed to use themeCombinationOfCustomProperties
+
 ### Removed
 * Removed dependency on terra-app-delegate package.
 
