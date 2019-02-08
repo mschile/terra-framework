@@ -102,12 +102,6 @@ const userAvatar = (
   />
 );
 
-const userData = {
-  name: 'User, Test',
-  detail: 'User Detail',
-  photo: userAvatar,
-};
-
 /**
  * The data provided for nameConfig will be visible in the ApplicationLayout's header, as well
  * as in any menus at the tiny and small breakpoints.
@@ -138,8 +132,7 @@ class TestApplication extends React.Component {
     super(props);
 
     this.state = {
-      checkboxItemEnabled: false,
-      activeNavigationItem: navigationItems[0],
+      activeNavigationItem: undefined,
     };
   }
 
@@ -147,36 +140,36 @@ class TestApplication extends React.Component {
     const {
       intl, history, location, disclosureManager,
     } = this.props;
-    const { checkboxItemEnabled, activeNavigationItem } = this.state;
+    const { activeNavigationItem } = this.state;
 
-    const customUtilityItems = [{
-      key: 'additional-1',
-      title: 'Drill-in Item',
-      childKeys: [
-        'additional-sub-1',
-        'additional-sub-2',
-      ],
-      parentKey: Utils.utilityHelpers.defaultKeys.MENU,
-    }, {
-      key: 'additional-sub-1',
-      title: 'Additional Item 1 - Sub 1',
-      parentKey: 'additional-1',
-    }, {
-      key: 'additional-sub-2',
-      title: 'Additional Item 1 - Sub 2',
-      parentKey: 'additional-1',
-    }, {
-      key: 'checkbox-item',
-      title: 'Custom Checkbox Item',
-      isSelectable: true,
-      isSelected: checkboxItemEnabled,
-      parentKey: Utils.utilityHelpers.defaultKeys.MENU,
-    }, {
-      key: 'additional-3',
-      contentLocation: Utils.utilityHelpers.locations.FOOTER,
-      title: 'Custom Footer',
-      parentKey: Utils.utilityHelpers.defaultKeys.MENU,
-    }];
+    // const customUtilityItems = [{
+    //   key: 'additional-1',
+    //   title: 'Drill-in Item',
+    //   childKeys: [
+    //     'additional-sub-1',
+    //     'additional-sub-2',
+    //   ],
+    //   parentKey: Utils.utilityHelpers.defaultKeys.MENU,
+    // }, {
+    //   key: 'additional-sub-1',
+    //   title: 'Additional Item 1 - Sub 1',
+    //   parentKey: 'additional-1',
+    // }, {
+    //   key: 'additional-sub-2',
+    //   title: 'Additional Item 1 - Sub 2',
+    //   parentKey: 'additional-1',
+    // }, {
+    //   key: 'checkbox-item',
+    //   title: 'Custom Checkbox Item',
+    //   isSelectable: true,
+    //   isSelected: checkboxItemEnabled,
+    //   parentKey: Utils.utilityHelpers.defaultKeys.MENU,
+    // }, {
+    //   key: 'additional-3',
+    //   contentLocation: Utils.utilityHelpers.locations.FOOTER,
+    //   title: 'Custom Footer',
+    //   parentKey: Utils.utilityHelpers.defaultKeys.MENU,
+    // }];
 
     /**
      * The data provided for utilityConfig will be visible in the ApplicationLayout's header in the
@@ -186,20 +179,20 @@ class TestApplication extends React.Component {
      * generate the configuration for the standard set of utility options. If the standard configuration is not
      * desirable, an entirely custom configuration can be used instead.
      */
-    const utilityConfig = Object.freeze({
-      title: 'Test, User',
-      accessory: userAvatar,
-      menuItems: Utils.utilityHelpers.getDefaultUtilityItems(intl, userData, customUtilityItems),
-      initialSelectedKey: Utils.utilityHelpers.defaultKeys.MENU,
-      onChange: (event, itemData) => {
-        disclosureManager.disclose({
-          preferredType: 'modal',
-          content: {
-            component: <DisclosureComponent text={itemData.key} />,
-          },
-        });
-      },
-    });
+    // const utilityConfig = Object.freeze({
+    //   title: 'Test, User',
+    //   accessory: userAvatar,
+    //   // menuItems: Utils.utilityHelpers.getDefaultUtilityItems(intl, userData, customUtilityItems),
+    //   // initialSelectedKey: Utils.utilityHelpers.defaultKeys.MENU,
+    //   // onChange: (event, itemData) => {
+    //   //   disclosureManager.disclose({
+    //   //     preferredType: 'modal',
+    //   //     content: {
+    //   //       component: <DisclosureComponent text={itemData.key} />,
+    //   //     },
+    //   //   });
+    //   // },
+    // });
 
     if (!activeNavigationItem) {
       return <Redirect to="/page_1" />;
@@ -256,51 +249,65 @@ class TestApplication extends React.Component {
     };
 
     return (
-      <ContentContainer
-        fill
-        // header={<p>{location.pathname}</p>}
-        id="application-layout-test"
+      <ApplicationLayout
+        nameConfig={nameConfig}
+        extensionConfig={extensionConfig}
+        userConfig={{
+          name: 'Test User',
+          detail: 'User Detail',
+          photo: userAvatar,   
+          component: undefined,                 
+        }}
+        utilityConfig={{
+          title: 'Test User',
+          accessory: userAvatar,  
+          component: undefined,    
+        }}
+        heroConfig={{
+          title: 'Test User',
+          accessory: userAvatar,
+          component: undefined,
+        }}
+        navigationItems={navigationItems}
+        activeNavigationItemKey={activeNavigationItem.key}
+        onSelectNavigationItem={(navigationItemKey) => {
+          if (this.state.activeNavigationItem !== navigationItemKey) {
+            history.push(navigationItemKey);
+          }
+        }}
+        onSelectSettings={() => { alert('settings'); }}
+        onSelectHelp={() => { alert('help'); }}
+        onSelectLogout={() => { alert('logout'); }}
+        onSelectUser={() => { alert('user'); }}
+        onSelectHero={() => { alert('hero'); }}
       >
-        <ApplicationLayout
-          nameConfig={nameConfig}
-          utilityConfig={utilityConfig}
-          extensionConfig={extensionConfig}
-          navigationItems={navigationItems}
-          activeNavigationItemKey={activeNavigationItem.key}
-          onSelectNavigationItem={(navigationItemKey) => {
-            if (this.state.activeNavigationItem !== navigationItemKey) {
-              history.push(navigationItemKey);
-            }
-          }}
+        <ContentContainer
+          fill
+          header={(
+            <DemographicsBanner
+              age="25 Years"
+              dateOfBirth="May 9, 1993"
+              gender="Male"
+              gestationalAge="April 5, 2016"
+              identifiers={{ MRN: 12343, REA: '3JSDA' }}
+              photo={<Image alt="My Cat" src="http://lorempixel.com/50/50/animals/7/" />}
+              personName="Johnathon Doe"
+              postMenstrualAge="April 7, 2016"
+              preferredFirstName="John"
+            />
+          )}
         >
-          <ContentContainer
-            fill
-            header={(
-              <DemographicsBanner
-                age="25 Years"
-                dateOfBirth="May 9, 1993"
-                gender="Male"
-                gestationalAge="April 5, 2016"
-                identifiers={{ MRN: 12343, REA: '3JSDA' }}
-                photo={<Image alt="My Cat" src="http://lorempixel.com/50/50/animals/7/" />}
-                personName="Johnathon Doe"
-                postMenstrualAge="April 7, 2016"
-                preferredFirstName="John"
-              />
-            )}
-          >
-            <Switch>
-              <Route path="/page_1" render={() => <Page1Content />} />
-              <Route path="/page_2" render={() => <CommonContent contentName="Page 2" />} />
-              <Route path="/page_3" render={() => <CommonContent contentName="Page 3" />} />
-              <Route path="/page_4" render={() => <CommonContent contentName="Page 4" />} />
-              <Route path="/page_5" render={() => <CommonContent contentName="Page 5" />} />
-              <Route path="/page_6" render={() => <CommonContent contentName="Page 6" />} />
-              <Route path="/page_7" render={() => <CommonContent contentName="Page 7" />} />
-            </Switch>
-          </ContentContainer>
-        </ApplicationLayout>
-      </ContentContainer>
+          <Switch>
+            <Route path="/page_1" render={() => <Page1Content />} />
+            <Route path="/page_2" render={() => <CommonContent contentName="Page 2" />} />
+            <Route path="/page_3" render={() => <CommonContent contentName="Page 3" />} />
+            <Route path="/page_4" render={() => <CommonContent contentName="Page 4" />} />
+            <Route path="/page_5" render={() => <CommonContent contentName="Page 5" />} />
+            <Route path="/page_6" render={() => <CommonContent contentName="Page 6" />} />
+            <Route path="/page_7" render={() => <CommonContent contentName="Page 7" />} />
+          </Switch>
+        </ContentContainer>
+      </ApplicationLayout>
     );
   }
 }

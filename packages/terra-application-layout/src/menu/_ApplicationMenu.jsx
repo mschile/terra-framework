@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+import Button from 'terra-button';
 import NavigationSideMenu from 'terra-navigation-side-menu';
 
 import styles from './ApplicationMenu.module.scss';
@@ -19,36 +20,73 @@ const defaultProps = {
 };
 
 const ApplicationMenu = ({
-  navigationItems, activeNavigationItemKey, onSelectNavigationItem, onSelectSettings,
+  userConfig, heroConfig, navigationItems, activeNavigationItemKey, onSelectNavigationItem, onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser, onSelectHero,
 }) => {
   console.log('');
+
+  let hero;
+  if (heroConfig) {
+    if (heroConfig.component) {
+      hero = heroConfig.component;
+    } else {
+      hero = (
+        <div>
+          <p>{heroConfig.title}</p>
+          <div>{heroConfig.accessory}</div>
+        </div>
+      );
+    }
+  }
+
+  let user;
+  if (userConfig) {
+    if (userConfig.component) {
+      user = userConfig.component;
+    } else {
+      user = (
+        <div>
+          <p>{userConfig.name}</p>
+          <div>{userConfig.detail}</div>
+          <div>{userConfig.photo}</div>
+        </div>
+      );
+    }
+  }
+
+  let settings;
+  if (onSelectSettings) {
+    settings = <Button isBlock text="Settings" onClick={onSelectSettings} />;
+  }
+
+  let help;
+  if (onSelectHelp) {
+    help = <Button isBlock text="Help" onClick={onSelectHelp} />;
+  }
+
+  let logout;
+  if (onSelectLogout) {
+    logout = <Button isBlock text="Logout" onClick={onSelectLogout} />;
+  }
 
   return (
     <div className={cx('application-menu')}>
       <div className={cx('body')}>
         <div className={cx('content')}>
           <div className={cx('normalizer')}>
-            <div style={{ height: '15rem', backgroundColor: '#2a4b77', color: 'white' }} />
+            {hero}
+            {user}
+            {settings}
+            {help}
             <NavigationSideMenu
               menuItems={[{
-                childKeys: navigationItems.map(item => item.key).concat(['settings']),
+                childKeys: navigationItems.map(item => item.key),
                 key: 'application_menu',
                 text: '', // Text is a required value here, but it's never actually rendered
                 isRootMenu: true,
-              }].concat(navigationItems).concat({
-                key: 'settings',
-                text: 'Settings',
-              })}
+              }].concat(navigationItems)}
               selectedMenuKey="application_menu"
               selectedChildKey={activeNavigationItemKey}
               onChange={(event, data) => {
-                if (data.selectedChildKey === 'settings') {
-                  if (onSelectSettings) {
-                    onSelectSettings();
-                  }
-                  return;
-                }
-
                 if (onSelectNavigationItem) {
                   onSelectNavigationItem(data.selectedChildKey);
                 }
@@ -58,7 +96,7 @@ const ApplicationMenu = ({
         </div>
       </div>
       <div className={cx('footer')}>
-        <div style={{ height: '5rem', backgroundColor: '#2a4b77', color: 'white' }} />
+        {logout}
       </div>
       <div className={cx('application-menu-shadow-element')} />
     </div>
