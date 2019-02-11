@@ -1,6 +1,5 @@
 import React from 'react';
 import { UtilityUtils } from 'terra-application-utility';
-import UserData from '../user/_UserData';
 
 const defaultKeys = {
   MENU: 'menu',
@@ -78,13 +77,7 @@ const reconcileChildren = (defaultItems, additionalItems) => {
  * integrated with the default item set. Additionally, a `parentKey` must be provided that correlates the item to a default item parent.
  */
 const getDefaultUtilityItems = (intl, userData, additionalItems) => {
-  const userDataComponent = (
-    <UserData
-      userName={userData.name}
-      userDetail={userData.detail}
-      userPhoto={userData.photo}
-    />
-  );
+  const userDataComponent = undefined;
 
   const defaultConfig = [
     {

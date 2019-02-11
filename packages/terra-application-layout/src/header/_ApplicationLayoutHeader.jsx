@@ -10,6 +10,7 @@ import IconMenu from 'terra-icon/lib/icon/IconMenu';
 import Popup from 'terra-popup';
 
 import ApplicationTabs from './tabs/_ApplicationTabs';
+import UtilityButton from './utility/_UtilityButton';
 import ApplicationLayoutPropTypes from '../utils/propTypes';
 import { isSizeCompact } from '../utils/helpers';
 
@@ -68,7 +69,6 @@ const propTypes = {
   onSelectSettings: PropTypes.func,
   onSelectHelp: PropTypes.func,
   onSelectLogout: PropTypes.func,
-  onSelectUser: PropTypes.func,
 };
 
 const defaultProps = {
@@ -177,25 +177,13 @@ class ApplicationHeader extends React.Component {
   }
 
   renderUtilities() {
-    const { utilityConfig, activeBreakpoint } = this.props;
-
-    const isCompact = isSizeCompact(activeBreakpoint);
-
-    if (utilityConfig) {
-      return (
-        <ApplicationHeaderUtility
-          onChange={this.handleUtilityOnChange}
-          onDisclose={this.handleUtilityDiscloseRequest}
-          title={!isCompact ? utilityConfig.title : undefined}
-          accessory={utilityConfig.accessory}
-          menuItems={utilityConfig.menuItems}
-          initialSelectedKey={utilityConfig.initialSelectedKey}
-          data-application-header-utility
-        />
-      );
-    }
-
-    return null;
+    const { userConfig } = this.props;
+    return (
+      <UtilityButton
+        userConfig={userConfig}
+        onClick={() => {}}
+      />
+    );
   }
 
   renderUtilitiesPopup() {
@@ -241,7 +229,6 @@ class ApplicationHeader extends React.Component {
           toggle={this.renderToggle()}
           navigation={this.renderAppName()}
           extensions={extensions}
-          utilities={this.renderUtilities()}
           skipToContentSelector="[data-terra-application-layout-main]"
         />
       );

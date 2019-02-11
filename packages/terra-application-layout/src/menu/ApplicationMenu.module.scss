@@ -30,7 +30,6 @@
     .header {
       background-color: #2a4b77;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 30px 20px;
     }
 
     .navigation-list,
@@ -91,14 +90,12 @@
     }
   }
 
-  .application-menu-shadow-element {
-    box-shadow: inset -7px 0 9px -7px rgba(0, 0, 0, 0.4);
-    height: 100%;
-    overflow: visible;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 9px;
+  .padded-hero-container {
+    padding: 20px 20px 0;
+  }
+
+  .padded-hero-container.pad-bottom {
+    padding: 20px;
   }
 }
 

@@ -21,6 +21,7 @@ import ApplicationLayout from '../../../../ApplicationLayout';
 import Page1Content from './Page1Content';
 import CommonContent from './CommonContent';
 import profileImage from './henry.jpg';
+import heroImage from './hero.jpg';
 
 const DisclosureComponent = withDisclosureManager(({ disclosureManager, text }) => (
   <ContentContainer
@@ -92,15 +93,6 @@ const navigationItems = [{
   key: '/page_7',
   text: 'Page 7',
 }];
-
-const userAvatar = (
-  <Avatar
-    variant="user"
-    alt="User, Test"
-    ariaLabel="User, Test"
-    key="user_avatar"
-  />
-);
 
 /**
  * The data provided for nameConfig will be visible in the ApplicationLayout's header, as well
@@ -254,15 +246,13 @@ class TestApplication extends React.Component {
         extensionConfig={extensionConfig}
         userConfig={{
           name: 'Test User',
-          detail: 'User Detail',
-          initials: 'TB',
+          detail: 'Super Cool Person',
+          initials: 'TU',
           image: profileImage,
         }}
-        heroConfig={{
-          title: 'Hero Title',
-          details: 'Hero Details',
-          image: profileImage,
-          component: undefined,
+        menuHeroConfig={{
+          component: <Image src={heroImage} variant="rounded" style={{ height: '150px', width: '100%' }} />,
+          padded: true,
         }}
         navigationItems={navigationItems}
         activeNavigationItemKey={activeNavigationItem.key}
@@ -281,7 +271,7 @@ class TestApplication extends React.Component {
             <div style={{ height: '50px', backgroundColor: 'blue', color: 'white' }}>
               <div>Demographics here</div>
             </div>
-            
+
           )}
         >
           <Switch>

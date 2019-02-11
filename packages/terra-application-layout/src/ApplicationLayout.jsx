@@ -48,8 +48,8 @@ const propTypes = {
   extensionConfig: ApplicationLayoutPropTypes.extensionConfigPropType,
   userConfig: PropTypes.object,
   utilityConfig: PropTypes.object,
-  smallHeroConfig: PropTypes.object,
-  largeHeroConfig: PropTypes.object,
+  menuHeroConfig: PropTypes.object,
+  utilityHeroConfig: PropTypes.object,
   navigationAlignment: ApplicationLayoutPropTypes.navigationAlignmentPropType,
   navigationItems: ApplicationLayoutPropTypes.navigationItemsPropType,
   activeNavigationItemKey: PropTypes.string,
@@ -57,7 +57,6 @@ const propTypes = {
   onSelectSettings: PropTypes.func,
   onSelectHelp: PropTypes.func,
   onSelectLogout: PropTypes.func,
-  onSelectUser: PropTypes.func,
   children: PropTypes.node,
   /**
    * @private
@@ -94,7 +93,6 @@ class ApplicationLayout extends React.Component {
     this.handleSettingsSelection = this.handleSettingsSelection.bind(this);
     this.handleHelpSelection = this.handleHelpSelection.bind(this);
     this.handleLogoutSelection = this.handleLogoutSelection.bind(this);
-    this.handleUserSelection = this.handleUserSelection.bind(this);
 
     this.hideMenu = true;
 
@@ -203,64 +201,29 @@ class ApplicationLayout extends React.Component {
     }
   }
 
-  handleUserSelection() {
-    const { onSelectUser } = this.props;
-    const { menuIsOpen } = this.state;
-
-    if (!onSelectUser) {
-      return;
-    }
-
-    if (menuIsOpen) {
-      this.setState({
-        menuIsOpen: false,
-      }, onSelectUser);
-    } else {
-      onSelectUser();
-    }
-  }
-
-  handleHeroSelection() {
-    const { onSelectHero } = this.props;
-    const { menuIsOpen } = this.state;
-
-    if (!onSelectHero) {
-      return;
-    }
-
-    if (menuIsOpen) {
-      this.setState({
-        menuIsOpen: false,
-      }, onSelectHero);
-    } else {
-      onSelectHero();
-    }
-  }
-
   renderNavigationMenu() {
     const {
-      userConfig, smallHeroConfig, navigationItems, activeNavigationItemKey,
-      onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser,
+      userConfig, menuHeroConfig, navigationItems, activeNavigationItemKey,
+      onSelectSettings, onSelectHelp, onSelectLogout,
     } = this.props;
 
     return (
       <ApplicationMenu
         userConfig={userConfig}
-        heroConfig={smallHeroConfig}
-        onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
-        onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
-        onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
-        onSelectUser={onSelectUser ? this.handleUserSelection : undefined}
+        heroConfig={menuHeroConfig}
         navigationItems={navigationItems}
         activeNavigationItemKey={activeNavigationItemKey}
         onSelectNavigationItem={this.handleNavigationItemSelection}
+        onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
+        onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
+        onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
       />
     );
   }
 
   render() {
     const {
-      nameConfig, utilityConfig, navigationAlignment, navigationItems, extensionConfig, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem, userConfig, largeHeroConfig, onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser, onSelectHero,
+      nameConfig, utilityConfig, navigationAlignment, navigationItems, extensionConfig, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem, userConfig, utilityHeroConfig, onSelectSettings, onSelectHelp, onSelectLogout,
     } = this.props;
     const { menuIsOpen, extensionIsOpen } = this.state;
 
@@ -317,11 +280,10 @@ class ApplicationLayout extends React.Component {
             onSelectNavigationItem={onSelectNavigationItem}
             onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
             userConfig={userConfig}
-            heroConfig={largeHeroConfig}
+            heroConfig={utilityHeroConfig}
             onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
             onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
             onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
-            onSelectUser={onSelectUser ? this.handleUserSelection : undefined}
           />
           {extensionDrawer}
           <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>

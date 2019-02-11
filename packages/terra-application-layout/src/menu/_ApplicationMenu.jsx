@@ -6,11 +6,17 @@ import IconSettings from 'terra-icon/lib/icon/IconSettings';
 import IconUnknown from 'terra-icon/lib/icon/IconUnknown';
 import Avatar from 'terra-avatar';
 
-import HeroLayout from './_HeroLayout';
+import SmallUserLayout from './_SmallUserLayout';
+import LargeUserLayout from './_LargeUserLayout';
 
 import styles from './ApplicationMenu.module.scss';
 
 const cx = classNames.bind(styles);
+
+const KEYCODES = {
+  ENTER: 13,
+  SPACE: 32,
+};
 
 const propTypes = {
   navigationItems: PropTypes.array,
@@ -26,33 +32,15 @@ const defaultProps = {
 const ApplicationMenu = ({
   userConfig, heroConfig, navigationItems, activeNavigationItemKey, onSelectNavigationItem, onSelectSettings, onSelectHelp, onSelectLogout,
 }) => {
-  let hero;
-  if (heroConfig) {
-    if (heroConfig.component) {
-      hero = heroConfig.component;
-    } else {
-      hero = (
-        <div>
-          <div>{heroConfig.title}</div>
-          <div>{heroConfig.accessory}</div>
-        </div>
-      );
-    }
-  }
 
   let user;
   if (userConfig) {
-    if (userConfig.component) {
-      user = userConfig.component;
-    } else {
-      user = (
-        <HeroLayout
-          title={userConfig.name}
-          detail={userConfig.detail}
-          header={<Avatar alt={userConfig.name} image={userConfig.image} initials={userConfig.initials} size={'3rem'} />}
-        />
-      );
-    }
+    user = heroConfig ? <SmallUserLayout userConfig={userConfig} /> : <LargeUserLayout userConfig={userConfig} />;
+  }
+
+  let hero;
+  if (heroConfig) {
+    hero = heroConfig.padded ? <div className={cx(['padded-hero-container', {'pad-bottom': !userConfig }])}>{heroConfig.component}</div> : heroConfig.component;
   }
 
   let logout;
@@ -78,6 +66,11 @@ const ApplicationMenu = ({
                   onSelectNavigationItem(item.key);
                 }
               }}
+              onKeyDown={(event) => {
+                if (event.nativeEvent.keyCode === KEYCODES.ENTER || event.nativeEvent.keyCode === KEYCODES.SPACE) {
+                  onSelectNavigationItem(item.key);
+                }            
+              }}
               role="option"
               tabIndex="0"
             >
@@ -92,6 +85,11 @@ const ApplicationMenu = ({
               key={'application-menu.settings'} 
               className={cx('utility-list-item')} 
               onClick={() => { onSelectSettings(); }}
+              onKeyDown={(event) => {
+                if (event.nativeEvent.keyCode === KEYCODES.ENTER || event.nativeEvent.keyCode === KEYCODES.SPACE) {
+                  onSelectSettings();
+                }            
+              }}
               role="option"
               tabIndex="0"
             >
@@ -104,6 +102,11 @@ const ApplicationMenu = ({
               key={'application-menu.help'} 
               className={cx('utility-list-item')} 
               onClick={() => { onSelectHelp(); }}
+              onKeyDown={(event) => {
+                if (event.nativeEvent.keyCode === KEYCODES.ENTER || event.nativeEvent.keyCode === KEYCODES.SPACE) {
+                  onSelectHelp();
+                }            
+              }}
               role="option"
               tabIndex="0"
             >
@@ -116,7 +119,6 @@ const ApplicationMenu = ({
       <div className={cx('footer')}>
         {logout}
       </div>
-      {/* <div className={cx('application-menu-shadow-element')} /> */}
     </div>
   );
 };

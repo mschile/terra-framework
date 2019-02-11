@@ -1,32 +1,41 @@
 :local {
-  .hero-layout {
+  .large-user-layout {
     align-items: center;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
+    padding: 20px;
   }
 
-  .header,
-  .title,
+  .avatar,
+  .name,
   .detail {
     flex: 1 1 auto;
   }
 
-  .header {
+  .avatar {
     margin-bottom: 12px;
   }
 
-  .title {
+  .name {
     color: #fff;  
     font-size: 18px;
     font-weight: 500;
+    overflow-wrap: break-word;
     text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    word-wrap: break-word;
   }
 
   .detail {
     color: rgba(255, 255, 255, 0.7);  
     font-size: 14x;
+    overflow-wrap: break-word;
     text-align: center;
+    white-space: normal;
+    word-break: break-word;
+    word-wrap: break-word;
   }
 }
 
