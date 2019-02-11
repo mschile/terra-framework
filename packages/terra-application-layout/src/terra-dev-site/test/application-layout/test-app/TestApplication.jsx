@@ -257,18 +257,9 @@ class TestApplication extends React.Component {
           initials: 'TB',
           image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
         }}
-        utilityConfig={{
-          title: 'Test User',
-          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',  
-          component: undefined,    
-        }}
-        smallHeroConfig={{
-          title: 'Test User',
-          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
-          component: undefined,
-        }}
-        largeHeroConfig={{
-          title: 'Test User',
+        heroConfig={{
+          title: 'Hero Title',
+          details: 'Hero Details',
           image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
           component: undefined,
         }}
@@ -282,13 +273,12 @@ class TestApplication extends React.Component {
         onSelectSettings={() => { console.log('settings'); }}
         onSelectHelp={() => { console.log('help'); }}
         onSelectLogout={() => { console.log('logout'); }}
-        onSelectUser={() => { console.log('user'); }}
       >
         <ContentContainer
           fill
           header={(
-            <div style={{ height: '50px', backgroundColor: 'navyblue' }}>
-              <h2>Demographics here</h2>
+            <div style={{ height: '50px', backgroundColor: 'blue', color: 'white' }}>
+              <div>Demographics here</div>
             </div>
             
           )}

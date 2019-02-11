@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Button from 'terra-button';
-import NavigationSideMenu from 'terra-navigation-side-menu';
+import IconSettings from 'terra-icon/lib/icon/IconSettings';
+import IconUnknown from 'terra-icon/lib/icon/IconUnknown';
+
 
 import styles from './ApplicationMenu.module.scss';
 
@@ -20,10 +22,8 @@ const defaultProps = {
 };
 
 const ApplicationMenu = ({
-  userConfig, heroConfig, navigationItems, activeNavigationItemKey, onSelectNavigationItem, onSelectSettings, onSelectHelp, onSelectLogout, onSelectUser, onSelectHero,
+  userConfig, heroConfig, navigationItems, activeNavigationItemKey, onSelectNavigationItem, onSelectSettings, onSelectHelp, onSelectLogout,
 }) => {
-  console.log('');
-
   let hero;
   if (heroConfig) {
     if (heroConfig.component) {
@@ -31,7 +31,7 @@ const ApplicationMenu = ({
     } else {
       hero = (
         <div>
-          <p>{heroConfig.title}</p>
+          <div>{heroConfig.title}</div>
           <div>{heroConfig.accessory}</div>
         </div>
       );
@@ -45,22 +45,12 @@ const ApplicationMenu = ({
     } else {
       user = (
         <div>
-          <p>{userConfig.name}</p>
+          <div>{userConfig.name}</div>
           <div>{userConfig.detail}</div>
           <div>{userConfig.photo}</div>
         </div>
       );
     }
-  }
-
-  let settings;
-  if (onSelectSettings) {
-    settings = <Button isBlock text="Settings" onClick={onSelectSettings} />;
-  }
-
-  let help;
-  if (onSelectHelp) {
-    help = <Button isBlock text="Help" onClick={onSelectHelp} />;
   }
 
   let logout;
@@ -70,30 +60,56 @@ const ApplicationMenu = ({
 
   return (
     <div className={cx('application-menu')}>
-      <div className={cx('body')}>
-        <div className={cx('content')}>
-          <div className={cx('normalizer')}>
-            {hero}
-            {user}
-            {settings}
-            {help}
-            <NavigationSideMenu
-              menuItems={[{
-                childKeys: navigationItems.map(item => item.key),
-                key: 'application_menu',
-                text: '', // Text is a required value here, but it's never actually rendered
-                isRootMenu: true,
-              }].concat(navigationItems)}
-              selectedMenuKey="application_menu"
-              selectedChildKey={activeNavigationItemKey}
-              onChange={(event, data) => {
+      <div className={cx('vertical-overflow-container')}>
+        <div className={cx('header')}>
+          {hero}
+          {user}
+        </div>
+        <ul className={cx('navigation-list')} role="listbox">
+          {navigationItems.map(item => (
+            <li
+              key={item.key} 
+              className={cx(['navigation-list-item', { 'active': item.key === activeNavigationItemKey }])} 
+              aria-selected={item.key === activeNavigationItemKey ? true : null}
+              onClick={() => {
                 if (onSelectNavigationItem) {
-                  onSelectNavigationItem(data.selectedChildKey);
+                  onSelectNavigationItem(item.key);
                 }
               }}
-            />
-          </div>
-        </div>
+              role="option"
+              tabIndex="0"
+            >
+              {item.key === activeNavigationItemKey ? <div className={cx('active-indicator')} /> : null}
+              {item.text}
+            </li>
+          ))}
+        </ul>
+        <ul className={cx('utility-list')} role="listbox">
+          {onSelectSettings ? (
+            <li 
+              key={'application-menu.settings'} 
+              className={cx('utility-list-item')} 
+              onClick={() => { onSelectSettings(); }}
+              role="option"
+              tabIndex="0"
+            >
+              <IconSettings className={cx('utility-menu-icon')} />
+              Settings
+            </li>
+          ) : null}
+          {onSelectHelp ? (
+            <li 
+              key={'application-menu.help'} 
+              className={cx('utility-list-item')} 
+              onClick={() => { onSelectHelp(); }}
+              role="option"
+              tabIndex="0"
+            >
+              <IconUnknown className={cx('utility-menu-icon')} />
+              Help
+            </li>
+          ) : null}
+        </ul>
       </div>
       <div className={cx('footer')}>
         {logout}
