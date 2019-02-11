@@ -116,7 +116,7 @@ const ApplicationMenu = ({
       <div className={cx('footer')}>
         {logout}
       </div>
-      <div className={cx('application-menu-shadow-element')} />
+      {/* <div className={cx('application-menu-shadow-element')} /> */}
     </div>
   );
 };

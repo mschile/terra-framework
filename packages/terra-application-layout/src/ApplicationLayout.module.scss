@@ -8,41 +8,38 @@
     width: 100%;
   }
 
-  .transform-container {
-    height: 100%;
-    overflow: visible;
-    position: relative;
-    // transition: transform 0.15s ease-out;
-    width: 100%;
-  }
-
-  .menu-is-open > .transform-container {
-    transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem), 0, 0));
-
-    @include terra-mq-small-up {
-      transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem), 0, 0);
-    } 
-  }
-
   .menu-panel {
     background-color: var(--terra-application-layout-menu-panel-panel-background-color, rgba(17, 22, 25, 0.3));
     height: 100%;
-    position: absolute;
+    position: relative;
     top: 0;
-    transform: translate3d(-100%, 0, 0);
     width: var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem));
-
+    z-index: 0;
+    
     @include terra-mq-small-up {
-      width: var(--terra-application-layout-menu-panel-panel-width-medium, 22.857rem);
+      width: var(--terra-application-layout-menu-panel-panel-width-medium, 20rem);
     } 
   }
 
   .body {
+    background-color: #fff;
+    box-shadow: -7px 0 9px -7px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
     height: 100%;
-    position: relative;
+    position: absolute;
+    top: 0;
+    transition: transform 0.15s ease-out;
     width: 100%;
+    z-index: 1;
+  }
+
+  .menu-is-open > .body {
+    transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-default, calc(100% - 3.571rem), 0, 0));
+
+    @include terra-mq-small-up {
+      transform: translate3d(var(--terra-application-layout-menu-panel-panel-width-medium, 20rem), 0, 0);
+    } 
   }
 
   .content {

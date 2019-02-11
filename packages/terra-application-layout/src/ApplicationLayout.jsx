@@ -105,14 +105,14 @@ class ApplicationLayout extends React.Component {
   }
 
   componentDidMount() {
-    if (this.transformContainerRef) {
-      this.transformContainerRef.addEventListener('transitionend', this.handleTransitionEnd);
+    if (this.bodyRef) {
+      this.bodyRef.addEventListener('transitionend', this.handleTransitionEnd);
     }
   }
 
   componentWillUnmount() {
-    if (this.transformContainerRef) {
-      this.transformContainerRef.removeEventListener('transitionend', this.handleTransitionEnd);
+    if (this.bodyRef) {
+      this.bodyRef.removeEventListener('transitionend', this.handleTransitionEnd);
     }
   }
 
@@ -278,55 +278,57 @@ class ApplicationLayout extends React.Component {
 
     return (
       <div className={cx(['application-layout-container', { 'menu-is-open': menuIsOpen }])}>
-        <div className={cx('transform-container')} ref={(ref) => { this.transformContainerRef = ref; }}>
-          <div className={cx('body')} aria-hidden={menuIsOpen ? true : null}>
-            <ApplicationLayoutHeader
-              activeBreakpoint={activeBreakpoint}
-              nameConfig={nameConfig}
-              utilityConfig={utilityConfig}
-              extensions={extensions}
-              navigationItems={navigationItems}
-              navigationItemAlignment={navigationAlignment}
-              activeNavigationItemKey={activeNavigationItemKey}
-              onSelectNavigationItem={onSelectNavigationItem}
-              onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
-              userConfig={userConfig}
-              heroConfig={largeHeroConfig}
-              onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
-              onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
-              onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
-              onSelectUser={onSelectUser ? this.handleUserSelection : undefined}
-            />
-            {extensionDrawer}
-            <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>
-              <Overlay isRelativeToContainer onRequestClose={event => event.stopPropagation()} isOpen={extensionIsOpen} backgroundStyle="dark" style={{ zIndex: '7000' }} />
-              {children}
-            </main>
-            <Overlay isRelativeToContainer isOpen={menuIsOpen} backgroundStyle="clear" />
-          </div>
-          <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? true : null} ref={this.setMenuPanelNode} style={this.hideMenu && !menuIsOpen ? { visibility: 'hidden' } : null}>
-            {isCompact && navigationItems.length ? (
-              <FocusTrap
-                active={menuIsOpen}
-                focusTrapOptions={{
-                  escapeDeactivates: true,
-                  returnFocusOnDeactivate: true,
-                  clickOutsideDeactivates: true,
-                  onDeactivate: () => {
-                    if (this.state.menuIsOpen) {
-                      this.setState({ menuIsOpen: false });
-                    }
-                  },
-                }}
-                style={{
-                  height: '100%',
-                  width: '100%',
-                }}
-              >
-                {this.renderNavigationMenu()}
-              </FocusTrap>
-            ) : undefined}
-          </div>
+        <div className={cx('menu-panel')} aria-hidden={!menuIsOpen ? true : null} ref={this.setMenuPanelNode} style={this.hideMenu && !menuIsOpen ? { visibility: 'hidden' } : null}>
+          {isCompact && navigationItems.length ? (
+            <FocusTrap
+              active={menuIsOpen}
+              focusTrapOptions={{
+                escapeDeactivates: true,
+                returnFocusOnDeactivate: true,
+                clickOutsideDeactivates: true,
+                onDeactivate: () => {
+                  if (this.state.menuIsOpen) {
+                    this.setState({ menuIsOpen: false });
+                  }
+                },
+              }}
+              style={{
+                height: '100%',
+                width: '100%',
+              }}
+            >
+              {this.renderNavigationMenu()}
+            </FocusTrap>
+          ) : undefined}
+        </div>
+        <div 
+          className={cx('body')} 
+          aria-hidden={menuIsOpen ? true : null} 
+          ref={(ref) => { this.bodyRef = ref; }}
+        >
+          <ApplicationLayoutHeader
+            activeBreakpoint={activeBreakpoint}
+            nameConfig={nameConfig}
+            utilityConfig={utilityConfig}
+            extensions={extensions}
+            navigationItems={navigationItems}
+            navigationItemAlignment={navigationAlignment}
+            activeNavigationItemKey={activeNavigationItemKey}
+            onSelectNavigationItem={onSelectNavigationItem}
+            onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
+            userConfig={userConfig}
+            heroConfig={largeHeroConfig}
+            onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
+            onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
+            onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
+            onSelectUser={onSelectUser ? this.handleUserSelection : undefined}
+          />
+          {extensionDrawer}
+          <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>
+            <Overlay isRelativeToContainer onRequestClose={event => event.stopPropagation()} isOpen={extensionIsOpen} backgroundStyle="dark" style={{ zIndex: '7000' }} />
+            {children}
+          </main>
+          <Overlay isRelativeToContainer isOpen={menuIsOpen} backgroundStyle="clear" />
         </div>
       </div>
     );
