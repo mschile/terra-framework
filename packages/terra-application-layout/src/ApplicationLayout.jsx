@@ -264,9 +264,9 @@ class ApplicationLayout extends React.Component {
             </FocusTrap>
           ) : undefined}
         </div>
-        <div 
-          className={cx('body')} 
-          aria-hidden={menuIsOpen ? true : null} 
+        <div
+          className={cx('body')}
+          aria-hidden={menuIsOpen ? true : null}
           ref={(ref) => { this.bodyRef = ref; }}
         >
           <ApplicationLayoutHeader

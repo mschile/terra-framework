@@ -4,13 +4,12 @@ import classNames from 'classnames/bind';
 import { injectIntl, intlShape } from 'react-intl';
 import { withDisclosureManager, disclosureManagerShape } from 'terra-disclosure-manager';
 import ApplicationHeaderLayout from 'terra-application-header-layout';
-import { ApplicationHeaderUtility } from 'terra-application-utility';
-import { ApplicationHeaderName } from 'terra-application-name';
 import IconMenu from 'terra-icon/lib/icon/IconMenu';
 import Popup from 'terra-popup';
 
 import ApplicationTabs from './tabs/_ApplicationTabs';
 import UtilityButton from './utility/_UtilityButton';
+import UtilityUserLayout from './utility/_UtilityUserLayout';
 import ApplicationLayoutPropTypes from '../utils/propTypes';
 import { isSizeCompact } from '../utils/helpers';
 
@@ -80,7 +79,6 @@ class ApplicationHeader extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleUtilityDiscloseRequest = this.handleUtilityDiscloseRequest.bind(this);
     this.handleUtilityPopupCloseRequest = this.handleUtilityPopupCloseRequest.bind(this);
     this.handleUtilityOnChange = this.handleUtilityOnChange.bind(this);
     this.getTargetRef = this.getTargetRef.bind(this);
@@ -91,7 +89,7 @@ class ApplicationHeader extends React.Component {
     this.renderUtilities = this.renderUtilities.bind(this);
     this.renderUtilitiesPopup = this.renderUtilitiesPopup.bind(this);
 
-    this.state = { utilityComponent: undefined };
+    this.state = { utilityPopupIsOpen: false };
   }
 
   setContentNode(node) {
@@ -105,15 +103,9 @@ class ApplicationHeader extends React.Component {
     return undefined;
   }
 
-  handleUtilityDiscloseRequest(utility) {
-    this.setState({
-      utilityComponent: React.cloneElement(utility, { onRequestClose: this.handleUtilityPopupCloseRequest }),
-    });
-  }
-
   handleUtilityPopupCloseRequest() {
-    if (this.state.utilityComponent) {
-      this.setState({ utilityComponent: undefined });
+    if (this.state.utilityPopupIsOpen) {
+      this.setState({ utilityPopupIsOpen: false });
     }
   }
 
@@ -150,7 +142,10 @@ class ApplicationHeader extends React.Component {
 
     if (nameConfig && (nameConfig.accessory || nameConfig.title)) {
       return (
-        <ApplicationHeaderName accessory={nameConfig.accessory} title={nameConfig.title} />
+        <div className={cx('application-name-container')}>
+          {nameConfig.accessory && <div className={cx('application-name-accessory')}>{nameConfig.accessory}</div>}
+          {nameConfig.title && <div className={cx('application-name-title')}>{nameConfig.title}</div>}
+        </div>
       );
     }
 
@@ -181,15 +176,25 @@ class ApplicationHeader extends React.Component {
     return (
       <UtilityButton
         userConfig={userConfig}
-        onClick={() => {}}
+        onClick={() => {
+          this.setState({
+            utilityPopupIsOpen: true,
+          });
+        }}
       />
     );
   }
 
   renderUtilitiesPopup() {
-    const { utilityComponent } = this.state;
+    const {
+      heroConfig, userConfig, onSelectSettings, onSelectHelp, onSelectLogout,
+    } = this.props;
+    const { utilityPopupIsOpen } = this.state;
 
-    if (utilityComponent) {
+    if (utilityPopupIsOpen) {
+      const heroComponent = heroConfig ? heroConfig.component : undefined;
+      const userComponent = <UtilityUserLayout userConfig={userConfig} />;
+
       return (
         <Popup
           attachmentBehavior="push"
@@ -201,7 +206,10 @@ class ApplicationHeader extends React.Component {
           onRequestClose={this.handleUtilityPopupCloseRequest}
           targetRef={this.getTargetRef}
         >
-          {utilityComponent}
+          <div style={{ backgroundColor: '#0079be' }}>
+            {heroComponent}
+            {userComponent}
+          </div>
         </Popup>
       );
     }

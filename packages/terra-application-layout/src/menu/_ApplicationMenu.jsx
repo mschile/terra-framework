@@ -4,10 +4,8 @@ import classNames from 'classnames/bind';
 import Button from 'terra-button';
 import IconSettings from 'terra-icon/lib/icon/IconSettings';
 import IconUnknown from 'terra-icon/lib/icon/IconUnknown';
-import Avatar from 'terra-avatar';
 
-import SmallUserLayout from './_SmallUserLayout';
-import LargeUserLayout from './_LargeUserLayout';
+import MenuUserLayout from './user/_MenuUserLayout';
 
 import styles from './ApplicationMenu.module.scss';
 
@@ -19,10 +17,14 @@ const KEYCODES = {
 };
 
 const propTypes = {
+  userConfig: PropTypes.object,
+  heroConfig: PropTypes.object,
   navigationItems: PropTypes.array,
   activeNavigationItemKey: PropTypes.string,
   onSelectNavigationItem: PropTypes.func,
   onSelectSettings: PropTypes.func,
+  onSelectHelp: PropTypes.func,
+  onSelectLogout: PropTypes.func,
 };
 
 const defaultProps = {
@@ -32,15 +34,14 @@ const defaultProps = {
 const ApplicationMenu = ({
   userConfig, heroConfig, navigationItems, activeNavigationItemKey, onSelectNavigationItem, onSelectSettings, onSelectHelp, onSelectLogout,
 }) => {
-
   let user;
   if (userConfig) {
-    user = heroConfig ? <SmallUserLayout userConfig={userConfig} /> : <LargeUserLayout userConfig={userConfig} />;
+    user = heroConfig ? <MenuUserLayout userConfig={userConfig} /> : <MenuUserLayout userConfig={userConfig} variant="large" />;
   }
 
   let hero;
   if (heroConfig) {
-    hero = heroConfig.padded ? <div className={cx(['padded-hero-container', {'pad-bottom': !userConfig }])}>{heroConfig.component}</div> : heroConfig.component;
+    hero = heroConfig.padded ? <div className={cx(['padded-hero-container', { 'pad-bottom': !userConfig }])}>{heroConfig.component}</div> : heroConfig.component;
   }
 
   let logout;
@@ -58,8 +59,8 @@ const ApplicationMenu = ({
         <ul className={cx('navigation-list')} role="listbox">
           {navigationItems.map(item => (
             <li
-              key={item.key} 
-              className={cx(['navigation-list-item', { 'active': item.key === activeNavigationItemKey }])} 
+              key={item.key}
+              className={cx(['navigation-list-item', { active: item.key === activeNavigationItemKey }])}
               aria-selected={item.key === activeNavigationItemKey ? true : null}
               onClick={() => {
                 if (onSelectNavigationItem) {
@@ -69,7 +70,7 @@ const ApplicationMenu = ({
               onKeyDown={(event) => {
                 if (event.nativeEvent.keyCode === KEYCODES.ENTER || event.nativeEvent.keyCode === KEYCODES.SPACE) {
                   onSelectNavigationItem(item.key);
-                }            
+                }
               }}
               role="option"
               tabIndex="0"
@@ -81,16 +82,17 @@ const ApplicationMenu = ({
         </ul>
         <ul className={cx('utility-list')} role="listbox">
           {onSelectSettings ? (
-            <li 
-              key={'application-menu.settings'} 
-              className={cx('utility-list-item')} 
+            <li
+              key="application-menu.settings"
+              className={cx('utility-list-item')}
               onClick={() => { onSelectSettings(); }}
               onKeyDown={(event) => {
                 if (event.nativeEvent.keyCode === KEYCODES.ENTER || event.nativeEvent.keyCode === KEYCODES.SPACE) {
                   onSelectSettings();
-                }            
+                }
               }}
               role="option"
+              aria-selected={false}
               tabIndex="0"
             >
               <IconSettings className={cx('utility-menu-icon')} />
@@ -98,16 +100,17 @@ const ApplicationMenu = ({
             </li>
           ) : null}
           {onSelectHelp ? (
-            <li 
-              key={'application-menu.help'} 
-              className={cx('utility-list-item')} 
+            <li
+              key="application-menu.help"
+              className={cx('utility-list-item')}
               onClick={() => { onSelectHelp(); }}
               onKeyDown={(event) => {
                 if (event.nativeEvent.keyCode === KEYCODES.ENTER || event.nativeEvent.keyCode === KEYCODES.SPACE) {
                   onSelectHelp();
-                }            
+                }
               }}
               role="option"
+              aria-selected={false}
               tabIndex="0"
             >
               <IconUnknown className={cx('utility-menu-icon')} />

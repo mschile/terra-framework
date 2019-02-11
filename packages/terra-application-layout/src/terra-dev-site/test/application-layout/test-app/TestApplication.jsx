@@ -254,6 +254,10 @@ class TestApplication extends React.Component {
           component: <Image src={heroImage} variant="rounded" style={{ height: '150px', width: '100%' }} />,
           padded: true,
         }}
+        utilityHeroConfig={{
+          component: <Image src={heroImage} variant="rounded" style={{ height: '150px', width: '100%' }} />,
+          padded: true,
+        }}
         navigationItems={navigationItems}
         activeNavigationItemKey={activeNavigationItem.key}
         onSelectNavigationItem={(navigationItemKey) => {

@@ -24,6 +24,7 @@ const UtilityButton = ({ userConfig, onClick, intl }) => (
     className={cx('utility-button')}
     onClick={onClick}
     aria-label={intl.formatMessage({ id: 'Terra.application.utility.button' })}
+    data-application-header-utility
   >
     {userConfig ? (
       <React.Fragment>
