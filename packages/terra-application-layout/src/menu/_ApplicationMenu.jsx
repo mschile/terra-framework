@@ -4,7 +4,9 @@ import classNames from 'classnames/bind';
 import Button from 'terra-button';
 import IconSettings from 'terra-icon/lib/icon/IconSettings';
 import IconUnknown from 'terra-icon/lib/icon/IconUnknown';
+import Avatar from 'terra-avatar';
 
+import HeroLayout from './_HeroLayout';
 
 import styles from './ApplicationMenu.module.scss';
 
@@ -44,11 +46,11 @@ const ApplicationMenu = ({
       user = userConfig.component;
     } else {
       user = (
-        <div>
-          <div>{userConfig.name}</div>
-          <div>{userConfig.detail}</div>
-          <div>{userConfig.photo}</div>
-        </div>
+        <HeroLayout
+          title={userConfig.name}
+          detail={userConfig.detail}
+          header={<Avatar alt={userConfig.name} image={userConfig.image} initials={userConfig.initials} size={'3rem'} />}
+        />
       );
     }
   }

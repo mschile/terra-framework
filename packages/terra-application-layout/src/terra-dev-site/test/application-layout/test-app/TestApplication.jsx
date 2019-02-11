@@ -17,9 +17,10 @@ import IconLightbulb from 'terra-icon/lib/icon/IconLightbulb';
 import IconCalculator from 'terra-icon/lib/icon/IconCalculator';
 import IconTrophy from 'terra-icon/lib/icon/IconTrophy';
 
-import ApplicationLayout, { Utils } from '../../../../ApplicationLayout';
+import ApplicationLayout from '../../../../ApplicationLayout';
 import Page1Content from './Page1Content';
 import CommonContent from './CommonContent';
+import profileImage from './henry.jpg';
 
 const DisclosureComponent = withDisclosureManager(({ disclosureManager, text }) => (
   <ContentContainer
@@ -255,12 +256,12 @@ class TestApplication extends React.Component {
           name: 'Test User',
           detail: 'User Detail',
           initials: 'TB',
-          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
+          image: profileImage,
         }}
         heroConfig={{
           title: 'Hero Title',
           details: 'Hero Details',
-          image: 'https://github.com/cerner/terra-core/blob/master/terra.png',
+          image: profileImage,
           component: undefined,
         }}
         navigationItems={navigationItems}
