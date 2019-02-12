@@ -13,17 +13,21 @@ const cx = classNames.bind(styles);
 const propTypes = {
   userConfig: PropTypes.func,
   onClick: PropTypes.func,
+  refCallback: PropTypes.func,
   intl: intlShape,
 };
 
 const defaultProps = {};
 
-const UtilityButton = ({ userConfig, onClick, intl }) => (
+const UtilityButton = ({
+  userConfig, onClick, refCallback, intl,
+}) => (
   <button
     type="button"
     className={cx('utility-button')}
     onClick={onClick}
     aria-label={intl.formatMessage({ id: 'Terra.application.utility.button' })}
+    ref={refCallback}
     data-application-header-utility
   >
     {userConfig ? (

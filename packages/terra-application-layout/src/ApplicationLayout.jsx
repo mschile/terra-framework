@@ -47,7 +47,6 @@ const propTypes = {
   nameConfig: ApplicationLayoutPropTypes.nameConfigPropType,
   extensionConfig: ApplicationLayoutPropTypes.extensionConfigPropType,
   userConfig: PropTypes.object,
-  utilityConfig: PropTypes.object,
   menuHeroConfig: PropTypes.object,
   utilityHeroConfig: PropTypes.object,
   navigationAlignment: ApplicationLayoutPropTypes.navigationAlignmentPropType,
@@ -82,17 +81,18 @@ class ApplicationLayout extends React.Component {
 
   constructor(props) {
     super(props);
+    this.generateMenuClosingCallback = this.generateMenuClosingCallback.bind(this);
 
     this.handleTransitionEnd = this.handleTransitionEnd.bind(this);
     this.setMenuPanelNode = this.setMenuPanelNode.bind(this);
     this.handleMenuToggle = this.handleMenuToggle.bind(this);
     this.handleExtensionToggle = this.handleExtensionToggle.bind(this);
-    this.handleNavigationItemSelection = this.handleNavigationItemSelection.bind(this);
     this.renderNavigationMenu = this.renderNavigationMenu.bind(this);
 
-    this.handleSettingsSelection = this.handleSettingsSelection.bind(this);
-    this.handleHelpSelection = this.handleHelpSelection.bind(this);
-    this.handleLogoutSelection = this.handleLogoutSelection.bind(this);
+    this.handleNavigationItemSelection = this.generateMenuClosingCallback('onSelectNavigationItem');
+    this.handleSettingsSelection = this.generateMenuClosingCallback('onSelectSettings');
+    this.handleHelpSelection = this.generateMenuClosingCallback('onSelectHelp');
+    this.handleLogoutSelection = this.generateMenuClosingCallback('onSelectLogout');
 
     this.hideMenu = true;
 
@@ -114,19 +114,25 @@ class ApplicationLayout extends React.Component {
     }
   }
 
+
   setMenuPanelNode(node) {
     this.menuPanelNode = node;
   }
 
-  handleNavigationItemSelection(selectedChildKey) {
-    this.setState({
-      menuIsOpen: false,
-    }, () => {
-      const { onSelectNavigationItem } = this.props;
-      if (onSelectNavigationItem) {
-        onSelectNavigationItem(selectedChildKey);
+  generateMenuClosingCallback(wrappedFunctionName) {
+    return (...args) => {
+      const wrappedFunction = this.props[wrappedFunctionName];
+
+      if (!wrappedFunction) {
+        return;
       }
-    });
+
+      this.setState({
+        menuIsOpen: false,
+      }, () => {
+        wrappedFunction(...args);
+      });
+    };
   }
 
   handleMenuToggle() {
@@ -147,57 +153,6 @@ class ApplicationLayout extends React.Component {
       this.hideMenu = true;
     } else {
       this.hideMenu = false;
-    }
-  }
-
-  handleSettingsSelection() {
-    const { onSelectSettings } = this.props;
-    const { menuIsOpen } = this.state;
-
-    if (!onSelectSettings) {
-      return;
-    }
-
-    if (menuIsOpen) {
-      this.setState({
-        menuIsOpen: false,
-      }, onSelectSettings);
-    } else {
-      onSelectSettings();
-    }
-  }
-
-  handleHelpSelection() {
-    const { onSelectHelp } = this.props;
-    const { menuIsOpen } = this.state;
-
-    if (!onSelectHelp) {
-      return;
-    }
-
-    if (menuIsOpen) {
-      this.setState({
-        menuIsOpen: false,
-      }, onSelectHelp);
-    } else {
-      onSelectHelp();
-    }
-  }
-
-  handleLogoutSelection() {
-    const { onSelectLogout } = this.props;
-    const { menuIsOpen } = this.state;
-
-    if (!onSelectLogout) {
-      return;
-    }
-
-    if (menuIsOpen) {
-      this.setState({
-        menuIsOpen: false,
-      }, onSelectLogout);
-    } else {
-      onSelectLogout();
     }
   }
 
@@ -223,7 +178,7 @@ class ApplicationLayout extends React.Component {
 
   render() {
     const {
-      nameConfig, utilityConfig, navigationAlignment, navigationItems, extensionConfig, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem, userConfig, utilityHeroConfig, onSelectSettings, onSelectHelp, onSelectLogout,
+      nameConfig, navigationAlignment, navigationItems, extensionConfig, activeBreakpoint, children, activeNavigationItemKey, onSelectNavigationItem, userConfig, utilityHeroConfig, onSelectSettings, onSelectHelp, onSelectLogout,
     } = this.props;
     const { menuIsOpen, extensionIsOpen } = this.state;
 
@@ -272,7 +227,6 @@ class ApplicationLayout extends React.Component {
           <ApplicationLayoutHeader
             activeBreakpoint={activeBreakpoint}
             nameConfig={nameConfig}
-            utilityConfig={utilityConfig}
             extensions={extensions}
             navigationItems={navigationItems}
             navigationItemAlignment={navigationAlignment}
@@ -281,9 +235,9 @@ class ApplicationLayout extends React.Component {
             onMenuToggle={navigationItems.length ? this.handleMenuToggle : undefined}
             userConfig={userConfig}
             heroConfig={utilityHeroConfig}
-            onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
-            onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
-            onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
+            onSelectSettings={onSelectSettings}
+            onSelectHelp={onSelectHelp}
+            onSelectLogout={onSelectLogout}
           />
           {extensionDrawer}
           <main tabIndex="-1" className={cx('content')} data-terra-application-layout-main>

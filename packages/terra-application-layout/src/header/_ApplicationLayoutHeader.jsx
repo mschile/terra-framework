@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { injectIntl, intlShape } from 'react-intl';
-import { withDisclosureManager, disclosureManagerShape } from 'terra-disclosure-manager';
 import ApplicationHeaderLayout from 'terra-application-header-layout';
 import IconMenu from 'terra-icon/lib/icon/IconMenu';
 import Popup from 'terra-popup';
 
 import ApplicationTabs from './tabs/_ApplicationTabs';
 import UtilityButton from './utility/_UtilityButton';
-import UtilityUserLayout from './utility/_UtilityUserLayout';
+import UtilityMenuLayout from './utility/_UtilityMenuLayout';
 import ApplicationLayoutPropTypes from '../utils/propTypes';
 import { isSizeCompact } from '../utils/helpers';
 
@@ -48,10 +47,6 @@ const propTypes = {
    */
   extensions: PropTypes.element,
   /**
-   * Configuration to be provided to the ApplicationUtility component.
-   */
-  utilityConfig: ApplicationLayoutPropTypes.utilityConfigPropType,
-  /**
    * The currently active breakpoint.
    */
   activeBreakpoint: PropTypes.string,
@@ -59,10 +54,6 @@ const propTypes = {
    * @private Internationalization object with translation APIs automatically provided by a Base ancestor.
    */
   intl: intlShape,
-  /**
-   * @private DisclosureManagerDelegate instance automatically provided by a DisclosureManager ancestor.
-   */
-  disclosureManager: disclosureManagerShape,
   userConfig: PropTypes.object,
   heroConfig: PropTypes.object,
   onSelectSettings: PropTypes.func,
@@ -80,39 +71,38 @@ class ApplicationHeader extends React.Component {
     super(props);
 
     this.handleUtilityPopupCloseRequest = this.handleUtilityPopupCloseRequest.bind(this);
-    this.handleUtilityOnChange = this.handleUtilityOnChange.bind(this);
-    this.getTargetRef = this.getTargetRef.bind(this);
-    this.setContentNode = this.setContentNode.bind(this);
+    this.generatePopupClosingCallback = this.generatePopupClosingCallback.bind(this);
     this.renderToggle = this.renderToggle.bind(this);
     this.renderAppName = this.renderAppName.bind(this);
     this.renderNavigationTabs = this.renderNavigationTabs.bind(this);
     this.renderUtilities = this.renderUtilities.bind(this);
     this.renderUtilitiesPopup = this.renderUtilitiesPopup.bind(this);
 
+    this.handleSettingsSelection = this.generatePopupClosingCallback('onSelectSettings');
+    this.handleHelpSelection = this.generatePopupClosingCallback('onSelectHelp');
+    this.handleLogoutSelection = this.generatePopupClosingCallback('onSelectLogout');
+
     this.state = { utilityPopupIsOpen: false };
   }
 
-  setContentNode(node) {
-    this.contentNode = node;
-  }
+  generatePopupClosingCallback(wrappedFunctionName) {
+    return (...args) => {
+      const wrappedFunction = this.props[wrappedFunctionName];
 
-  getTargetRef() {
-    if (this.contentNode) {
-      return this.contentNode.querySelector('[data-application-header-utility]');
-    }
-    return undefined;
+      if (!wrappedFunction) {
+        return;
+      }
+
+      this.setState({
+        utilityPopupIsOpen: false,
+      }, () => {
+        wrappedFunction(...args);
+      });
+    };
   }
 
   handleUtilityPopupCloseRequest() {
-    if (this.state.utilityPopupIsOpen) {
-      this.setState({ utilityPopupIsOpen: false });
-    }
-  }
-
-  handleUtilityOnChange(event, itemData) {
-    const { utilityConfig, disclosureManager } = this.props;
-
-    utilityConfig.onChange(event, itemData, disclosureManager && disclosureManager.disclose);
+    this.setState({ utilityPopupIsOpen: false });
   }
 
   renderToggle() {
@@ -181,6 +171,9 @@ class ApplicationHeader extends React.Component {
             utilityPopupIsOpen: true,
           });
         }}
+        refCallback={(ref) => {
+          this.utilityButtonRef = ref;
+        }}
       />
     );
   }
@@ -192,9 +185,6 @@ class ApplicationHeader extends React.Component {
     const { utilityPopupIsOpen } = this.state;
 
     if (utilityPopupIsOpen) {
-      const heroComponent = heroConfig ? heroConfig.component : undefined;
-      const userComponent = <UtilityUserLayout userConfig={userConfig} />;
-
       return (
         <Popup
           attachmentBehavior="push"
@@ -204,12 +194,15 @@ class ApplicationHeader extends React.Component {
           isHeaderDisabled
           isOpen
           onRequestClose={this.handleUtilityPopupCloseRequest}
-          targetRef={this.getTargetRef}
+          targetRef={() => (this.utilityButtonRef)}
         >
-          <div style={{ backgroundColor: '#0079be' }}>
-            {heroComponent}
-            {userComponent}
-          </div>
+          <UtilityMenuLayout
+            heroConfig={heroConfig}
+            userConfig={userConfig}
+            onSelectSettings={onSelectSettings ? this.handleSettingsSelection : undefined}
+            onSelectHelp={onSelectHelp ? this.handleHelpSelection : undefined}
+            onSelectLogout={onSelectLogout ? this.handleLogoutSelection : undefined}
+          />
         </Popup>
       );
     }
@@ -253,7 +246,7 @@ class ApplicationHeader extends React.Component {
     }
 
     return (
-      <div className={cx('application-header')} ref={this.setContentNode}>
+      <div className={cx('application-header')}>
         {headerLayout}
         {this.renderUtilitiesPopup()}
       </div>
@@ -264,4 +257,4 @@ class ApplicationHeader extends React.Component {
 ApplicationHeader.propTypes = propTypes;
 ApplicationHeader.defaultProps = defaultProps;
 
-export default injectIntl(withDisclosureManager(ApplicationHeader));
+export default injectIntl(ApplicationHeader);
