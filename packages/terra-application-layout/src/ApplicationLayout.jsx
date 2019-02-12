@@ -5,12 +5,12 @@ import Overlay from 'terra-overlay';
 import { withActiveBreakpoint } from 'terra-breakpoints';
 import FocusTrap from 'focus-trap-react';
 
-import ApplicationLayoutHeader from './header/_ApplicationLayoutHeader';
 import ApplicationLayoutPropTypes from './utils/propTypes';
 import Helpers, { isSizeCompact } from './utils/helpers';
 import UtilityHelpers from './utils/utilityHelpers';
 import ExtensionDrawer from './extensions/ExtensionDrawer';
 import ExtensionBar from './extensions/ExtensionBar';
+import ApplicationHeader from './header/_ApplicationHeader';
 import ApplicationMenu from './menu/_ApplicationMenu';
 
 import 'terra-base/lib/baseStyles';
@@ -224,7 +224,7 @@ class ApplicationLayout extends React.Component {
           aria-hidden={menuIsOpen ? true : null}
           ref={(ref) => { this.bodyRef = ref; }}
         >
-          <ApplicationLayoutHeader
+          <ApplicationHeader
             activeBreakpoint={activeBreakpoint}
             nameConfig={nameConfig}
             extensions={extensions}

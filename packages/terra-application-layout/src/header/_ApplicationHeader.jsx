@@ -2,18 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { injectIntl, intlShape } from 'react-intl';
-import ApplicationHeaderLayout from 'terra-application-header-layout';
 import IconMenu from 'terra-icon/lib/icon/IconMenu';
 import Popup from 'terra-popup';
 
+import ApplicationHeaderLayout from './_ApplicationHeaderLayout';
 import ApplicationTabs from './tabs/_ApplicationTabs';
 import UtilityButton from './utility/_UtilityButton';
 import UtilityMenuLayout from './utility/_UtilityMenuLayout';
 import ApplicationLayoutPropTypes from '../utils/propTypes';
 import { isSizeCompact } from '../utils/helpers';
 
-import 'terra-base/lib/baseStyles';
-import styles from './ApplicationLayoutHeader.module.scss';
+import styles from './ApplicationHeader.module.scss';
 
 const cx = classNames.bind(styles);
 
