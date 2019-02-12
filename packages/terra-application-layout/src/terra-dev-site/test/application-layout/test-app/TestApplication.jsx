@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom';
 import { injectIntl, intlShape } from 'react-intl';
 import Image from 'terra-image';
-import Avatar from 'terra-avatar';
 import ContentContainer from 'terra-content-container';
 import ActionHeader from 'terra-action-header';
 import { withDisclosureManager } from 'terra-disclosure-manager';
@@ -18,7 +17,6 @@ import IconCalculator from 'terra-icon/lib/icon/IconCalculator';
 import IconTrophy from 'terra-icon/lib/icon/IconTrophy';
 
 import ApplicationLayout from '../../../../ApplicationLayout';
-import Page1Content from './Page1Content';
 import CommonContent from './CommonContent';
 import profileImage from './henry.jpg';
 import heroImage from './hero.jpg';
@@ -252,7 +250,7 @@ class TestApplication extends React.Component {
         }}
         menuHeroConfig={{
           component: <Image src={heroImage} variant="rounded" style={{ height: '150px', width: '100%' }} />,
-          padded: true,
+          padded: false,
         }}
         utilityHeroConfig={{
           component: <Image src={heroImage} variant="rounded" style={{ height: '150px', width: '100%' }} />,
@@ -279,7 +277,7 @@ class TestApplication extends React.Component {
           )}
         >
           <Switch>
-            <Route path="/page_1" render={() => <Page1Content />} />
+            <Route path="/page_1" render={() => <CommonContent contentName="Page 1" />} />
             <Route path="/page_2" render={() => <CommonContent contentName="Page 2" />} />
             <Route path="/page_3" render={() => <CommonContent contentName="Page 3" />} />
             <Route path="/page_4" render={() => <CommonContent contentName="Page 4" />} />

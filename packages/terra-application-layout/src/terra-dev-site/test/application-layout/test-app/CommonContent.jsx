@@ -1,7 +1,6 @@
 import React from 'react';
 
 import ContentContainer from 'terra-content-container';
-import SecondaryNavigationLayoutActionHeader from '../../../../SecondaryNavigationLayoutActionHeader';
 
 const PageContent = ({
   contentName, children,
@@ -9,7 +8,6 @@ const PageContent = ({
   <ContentContainer
     fill
   >
-    <SecondaryNavigationLayoutActionHeader />
     {children || (
       <div style={{ paddingLeft: '0.714rem', paddingRight: '0.714rem' }}>
         <h2>{contentName}</h2>

@@ -10,27 +10,27 @@ const cx = classNames.bind(styles);
 const propTypes = {
   /**
    * Extensions element to be placed before the end of the header.
-   * */
+   */
   extensions: PropTypes.element,
   /**
    * Logo element to be placed at the start of the header after the toggle element.
-   * */
+   */
   logo: PropTypes.element,
   /**
    * intl object programatically imported through injectIntl from terra-base.
-   * */
+   */
   intl: intlShape.isRequired,
   /**
    * Navigation element to be placed within the fill area of the header.
-   * */
+   */
   navigation: PropTypes.element,
   /**
    * Toggle element to be placed at the start of the header.
-   * */
+   */
   toggle: PropTypes.element,
   /**
    * Utilities element to be placed at the end of the header.
-   * */
+   */
   utilities: PropTypes.element,
   /**
    * The string selector for the element that will receive focus when the "Skip to Content" button is pressed.
