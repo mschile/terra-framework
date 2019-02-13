@@ -132,58 +132,6 @@ class TestApplication extends React.Component {
     } = this.props;
     const { activeNavigationItem } = this.state;
 
-    // const customUtilityItems = [{
-    //   key: 'additional-1',
-    //   title: 'Drill-in Item',
-    //   childKeys: [
-    //     'additional-sub-1',
-    //     'additional-sub-2',
-    //   ],
-    //   parentKey: Utils.utilityHelpers.defaultKeys.MENU,
-    // }, {
-    //   key: 'additional-sub-1',
-    //   title: 'Additional Item 1 - Sub 1',
-    //   parentKey: 'additional-1',
-    // }, {
-    //   key: 'additional-sub-2',
-    //   title: 'Additional Item 1 - Sub 2',
-    //   parentKey: 'additional-1',
-    // }, {
-    //   key: 'checkbox-item',
-    //   title: 'Custom Checkbox Item',
-    //   isSelectable: true,
-    //   isSelected: checkboxItemEnabled,
-    //   parentKey: Utils.utilityHelpers.defaultKeys.MENU,
-    // }, {
-    //   key: 'additional-3',
-    //   contentLocation: Utils.utilityHelpers.locations.FOOTER,
-    //   title: 'Custom Footer',
-    //   parentKey: Utils.utilityHelpers.defaultKeys.MENU,
-    // }];
-
-    /**
-     * The data provided for utilityConfig will be visible in the ApplicationLayout's header in the
-     * standard rendering mode and within the menus in the compact rendering mode.
-     *
-     * The ApplicationLayout's Utils export provides a helper function named getDefaultUtilityConfig that will
-     * generate the configuration for the standard set of utility options. If the standard configuration is not
-     * desirable, an entirely custom configuration can be used instead.
-     */
-    // const utilityConfig = Object.freeze({
-    //   title: 'Test, User',
-    //   accessory: userAvatar,
-    //   // menuItems: Utils.utilityHelpers.getDefaultUtilityItems(intl, userData, customUtilityItems),
-    //   // initialSelectedKey: Utils.utilityHelpers.defaultKeys.MENU,
-    //   // onChange: (event, itemData) => {
-    //   //   disclosureManager.disclose({
-    //   //     preferredType: 'modal',
-    //   //     content: {
-    //   //       component: <DisclosureComponent text={itemData.key} />,
-    //   //     },
-    //   //   });
-    //   // },
-    // });
-
     if (!activeNavigationItem) {
       return <Redirect to="/page_1" />;
     }
@@ -263,29 +211,43 @@ class TestApplication extends React.Component {
             history.push(navigationItemKey);
           }
         }}
-        onSelectSettings={() => { console.log('settings'); }}
-        onSelectHelp={() => { console.log('help'); }}
-        onSelectLogout={() => { console.log('logout'); }}
+        onSelectSettings={() => {
+          disclosureManager.disclose({
+            preferredType: 'modal',
+            content: {
+              key: 'settings-component',
+              component: <DisclosureComponent text="Settings" />,
+            },
+          });
+        }}
+        onSelectHelp={() => {
+          disclosureManager.disclose({
+            preferredType: 'modal',
+            content: {
+              key: 'help-component',
+              component: <DisclosureComponent text="Help" />,
+            },
+          });
+        }}
+        onSelectLogout={() => {
+          disclosureManager.disclose({
+            preferredType: 'modal',
+            content: {
+              key: 'logout-component',
+              component: <DisclosureComponent text="Logout" />,
+            },
+          });
+        }}
       >
-        <ContentContainer
-          fill
-          header={(
-            <div style={{ height: '50px', backgroundColor: 'blue', color: 'white' }}>
-              <div>Demographics here</div>
-            </div>
-
-          )}
-        >
-          <Switch>
-            <Route path="/page_1" render={() => <CommonContent contentName="Page 1" />} />
-            <Route path="/page_2" render={() => <CommonContent contentName="Page 2" />} />
-            <Route path="/page_3" render={() => <CommonContent contentName="Page 3" />} />
-            <Route path="/page_4" render={() => <CommonContent contentName="Page 4" />} />
-            <Route path="/page_5" render={() => <CommonContent contentName="Page 5" />} />
-            <Route path="/page_6" render={() => <CommonContent contentName="Page 6" />} />
-            <Route path="/page_7" render={() => <CommonContent contentName="Page 7" />} />
-          </Switch>
-        </ContentContainer>
+        <Switch>
+          <Route path="/page_1" render={() => <CommonContent contentName="Page 1" />} />
+          <Route path="/page_2" render={() => <CommonContent contentName="Page 2" />} />
+          <Route path="/page_3" render={() => <CommonContent contentName="Page 3" />} />
+          <Route path="/page_4" render={() => <CommonContent contentName="Page 4" />} />
+          <Route path="/page_5" render={() => <CommonContent contentName="Page 5" />} />
+          <Route path="/page_6" render={() => <CommonContent contentName="Page 6" />} />
+          <Route path="/page_7" render={() => <CommonContent contentName="Page 7" />} />
+        </Switch>
       </ApplicationLayout>
     );
   }
