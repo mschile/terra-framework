@@ -4,6 +4,16 @@ Changelog
 Unreleased
 ----------
 
+4.9.0 - (April 9, 2019)
+------------------
+### Added
+* Added alt text to app logo image used in doc example with icons in nav
+
+4.8.0 - (April 2, 2019)
+------------------
+### Added
+* Support for icons in the primary navigation items
+
 4.7.0 - (March 26, 2019)
 ------------------
 ### Changed
@@ -19,9 +29,6 @@ Unreleased
 ### Changed
 * Update Jest tests to use terra-enzyme-intl
 * Changed demo mock colors to be themable
-
-### Added
-* Support for icons in the primary navigation items
 
 4.5.0 - (March 12, 2019)
 ------------------
