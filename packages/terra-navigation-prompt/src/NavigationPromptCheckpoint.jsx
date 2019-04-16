@@ -108,7 +108,7 @@ class NavigationPromptCheckpoint extends React.Component {
    * This function is part of the NavigationPromptCheckpoint's public API. Changes to this function name or overall functionality
    * will impact the package's version.
    */
-  resolvePrompts(dialogOptions) {
+  resolvePrompts(dialogOptions = {}) {
     if (!Object.keys(this.registeredPrompts).length) {
       /**
        * If no prompts are registered, then no prompts must be rendered.

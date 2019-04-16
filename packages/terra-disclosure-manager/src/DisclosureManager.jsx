@@ -418,7 +418,6 @@ class DisclosureManager extends React.Component {
   generatePopFunction(key) {
     return () => {
       let promiseRoot = Promise.resolve();
-
       const dismissCheck = this.dismissChecks[key];
       if (dismissCheck) {
         promiseRoot = dismissCheck();
@@ -429,7 +428,12 @@ class DisclosureManager extends React.Component {
           const { checkpointRefs } = this.state;
 
           if (checkpointRefs[key] && checkpointRefs[key].current) {
-            return checkpointRefs[key].current.resolvePrompts();
+            return checkpointRefs[key].current.resolvePrompts({
+              title: 'Title',
+              message: 'Message',
+              acceptButtonText: 'Continue',
+              rejectButtonText: 'Return',
+            });
           }
 
           return undefined;
