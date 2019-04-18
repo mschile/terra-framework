@@ -385,11 +385,10 @@ class DisclosureManager extends React.Component {
       const key = keys.pop();
 
       this.generatePopFunction(key)()
-        .then(() => {
-          this.resolveDismissChecksInSequence(keys).then(resolve).catch(reject);
-        })
-        .catch(() => {
-          reject();
+        .then(() => this.resolveDismissChecksInSequence(keys))
+        .then(resolve)
+        .catch((...e) => {
+          reject(e);
         });
     });
   }
@@ -425,13 +424,13 @@ class DisclosureManager extends React.Component {
 
       return promiseRoot
         .then(() => {
-          const { checkpointRefs } = this.state;
+          const checkpointRef = this.state.checkpointRefs[key];
 
-          if (checkpointRefs[key] && checkpointRefs[key].current) {
-            return checkpointRefs[key].current.resolvePrompts({
-              title: 'Title',
-              message: 'Message',
-              acceptButtonText: 'Continue',
+          if (checkpointRef && checkpointRef.current) {
+            return checkpointRef.current.resolvePrompts({
+              title: 'Unsaved Changes',
+              message: 'The taken action will result in the loss of data.',
+              acceptButtonText: 'Continue wihtout Saving',
               rejectButtonText: 'Return',
             });
           }
@@ -441,8 +440,6 @@ class DisclosureManager extends React.Component {
         .then(() => {
           this.dismissChecks[key] = undefined;
           this.resolveDismissPromise(key);
-        })
-        .then(() => {
           this.popDisclosure();
         });
     };
