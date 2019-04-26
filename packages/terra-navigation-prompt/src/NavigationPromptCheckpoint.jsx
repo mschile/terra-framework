@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import PromptRegistrationContext from './PromptRegistrationContext';
+import PromptRegistrationContext, { promptRegistrationContextValueShape } from './PromptRegistrationContext';
 import withPromptRegistration from './_withPromptRegistration';
 import CheckpointNotificationDialog from './_CheckpointNotificationDialog';
 
@@ -19,28 +19,27 @@ const propTypes = {
    *
    * Function Example:
    *
-   * `(arrayOfPrompts) => {
+   * ```
+   * (arrayOfPrompts) => {
    *   arrayOfPrompts.forEach((prompt) => {
    *     console.log(prompt.description);
    *     console.log(prompt.metaData);
    *   })
    *   this.myLocalPromptRegistry = arrayOfPrompts;
-   * }`
+   * }
+   * ```
    */
   onPromptChange: PropTypes.func,
   /**
    * @private
    * An object containing prompt registration APIs provided through the PromptRegistrationContext.
    */
-  promptRegistration: PropTypes.shape({
-    registerPrompt: PropTypes.func.isRequired,
-    deregisterPrompt: PropTypes.func.isRequired,
-  }).isRequired,
+  promptRegistration: promptRegistrationContextValueShape.isRequired,
 };
 
 class NavigationPromptCheckpoint extends React.Component {
   static getPromptArray(prompts) {
-    return Object.keys(prompts).map(id => ({ description: prompts[id][0], metaData: prompts[id][1] }));
+    return Object.keys(prompts).map(id => prompts[id]);
   }
 
   constructor(props) {
@@ -69,20 +68,23 @@ class NavigationPromptCheckpoint extends React.Component {
     }
   }
 
-  registerPrompt(promptId, promptDescription, metaData) {
+  registerPrompt(promptId, description, metaData) {
     const { onPromptChange, promptRegistration } = this.props;
 
-    if (!promptId) {
+    if (!promptId && process.env.NODE_ENV !== 'production') {
+      /* eslint-disable no-console */
+      console.warn('A NavigationPrompt cannot be registered without an identifier.');
+      /* eslint-enable no-console */
       return;
     }
 
-    this.registeredPrompts[promptId] = [promptDescription, metaData];
+    this.registeredPrompts[promptId] = { description, metaData };
 
     if (onPromptChange) {
       onPromptChange(NavigationPromptCheckpoint.getPromptArray(this.registeredPrompts));
     }
 
-    promptRegistration.registerPrompt(promptId, promptDescription, metaData);
+    promptRegistration.registerPrompt(promptId, description, metaData);
   }
 
   deregisterPrompt(promptId) {
@@ -109,22 +111,24 @@ class NavigationPromptCheckpoint extends React.Component {
    * will impact the package's version.
    */
   resolvePrompts(dialogOptions = {}) {
+    /**
+      * If no prompts are registered, then no prompts must be rendered.
+      */
     if (!Object.keys(this.registeredPrompts).length) {
-      /**
-       * If no prompts are registered, then no prompts must be rendered.
-       */
       return Promise.resolve();
     }
+
+    const registeredPromptArray = NavigationPromptCheckpoint.getPromptArray(this.registeredPrompts);
 
     /**
      * Otherwise, the CheckpointNotificationDialog is shown.
      */
     return new Promise((resolve, reject) => {
       this.checkpointNotificationDialogRef.current.showDialog({
-        title: dialogOptions.title,
-        message: dialogOptions.message,
-        acceptButtonText: dialogOptions.acceptButtonText,
-        rejectButtonText: dialogOptions.rejectButtonText,
+        title: typeof dialogOptions.title === 'function' ? dialogOptions.title(registeredPromptArray) : dialogOptions.title,
+        message: typeof dialogOptions.message === 'function' ? dialogOptions.message(registeredPromptArray) : dialogOptions.message,
+        acceptButtonText: typeof dialogOptions.acceptButtonText === 'function' ? dialogOptions.acceptButtonText(registeredPromptArray) : dialogOptions.acceptButtonText,
+        rejectButtonText: typeof dialogOptions.rejectButtonText === 'function' ? dialogOptions.rejectButtonText(registeredPromptArray) : dialogOptions.rejectButtonText,
         onAccept: resolve,
         onReject: reject,
       });

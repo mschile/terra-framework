@@ -57,15 +57,11 @@ Input.propTypes = {
 const Form = ({ title }) => {
   const [timeStamp, setTimeStamp] = useState(Date.now());
   const inputCheckpointRef = useRef();
-  const registeredPromptsRef = useRef([]);
 
   return (
     <div style={{ padding: '10px', border: '1px solid lightgrey' }}>
       <NavigationPromptCheckpoint
         ref={inputCheckpointRef}
-        onPromptChange={(prompts) => {
-          registeredPromptsRef.current = prompts;
-        }}
       >
         <React.Fragment key={timeStamp}>
           <h3>{title}</h3>
@@ -81,11 +77,13 @@ const Form = ({ title }) => {
           <button
             type="button"
             onClick={() => {
-              const promptDescriptions = registeredPromptsRef.current.map(prompt => `${prompt.description} (${prompt.metaData.value})`).join(', ');
-
               inputCheckpointRef.current.resolvePrompts({
-                title: registeredPromptsRef.current.map(prompt => prompt.description).join(', '),
-                message: `There are unsubmitted changes in ${promptDescriptions}. Continue with Form reset?`,
+                title: prompts => (
+                  prompts.map(prompt => prompt.description).join(', ')
+                ),
+                message: prompts => (
+                  `There are unsubmitted changes in ${prompts.map(prompt => prompt.description).join(', ')}. Continue with Form reset?`
+                ),
                 rejectButtonText: 'Return',
                 acceptButtonText: 'Continue without Saving',
               }).then(() => {
@@ -116,7 +114,7 @@ Form.propTypes = {
 };
 
 /**
- * The FormSwitcher toggles between to versions a Form to demonstrate the functionality of nested NavigationPromptCheckpoints.
+ * The FormSwitcher toggles between two versions a Form to demonstrate the functionality of nested NavigationPromptCheckpoints.
  * Any NavigationPrompt registered to the Form's checkpoint will also be registered to the FormSwitcher's checkpoint.
  *
  * Before the FormSwitcher changes the Form type, the FormSwitcher resolves the prompts below its checkpoint with the default prompt title and message.

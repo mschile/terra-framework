@@ -180,7 +180,7 @@ class DisclosureManager extends React.Component {
      * Allows a component to remove itself from the disclosure stack. If the component is the only element in the disclosure stack,
      * the disclosure is closed.
      */
-    delegate.dismiss = componentIndex > 0 ? popContent : this.safelyCloseDisclosure;
+    delegate.dismiss = popContent;
 
     /**
      * Allows a component to close the entire disclosure stack.
@@ -416,8 +416,19 @@ class DisclosureManager extends React.Component {
    */
   generatePopFunction(key) {
     return () => {
+      const { disclosureComponentKeys } = this.state;
+
+      if (disclosureComponentKeys[disclosureComponentKeys.length - 1] !== key) {
+        /**
+         * If the top component key in the disclosure stack does not match
+         * the key used to generate this function, or the key is undefined, then the pop action is rejected.
+         */
+        return Promise.reject();
+      }
+
       let promiseRoot = Promise.resolve();
       const dismissCheck = this.dismissChecks[key];
+
       if (dismissCheck) {
         promiseRoot = dismissCheck();
       }
@@ -438,9 +449,12 @@ class DisclosureManager extends React.Component {
           return undefined;
         })
         .then(() => {
-          this.dismissChecks[key] = undefined;
-          this.resolveDismissPromise(key);
-          this.popDisclosure();
+            /**
+             * If there is only one disclosed component, the disclosure is closed and all state is reset.
+             */
+          } else {
+            this.popDisclosure();
+          }
         });
     };
   }
@@ -465,7 +479,7 @@ class DisclosureManager extends React.Component {
     }
 
     return render({
-      dismissPresentedComponent: (disclosureComponentKeys.length > 1) ? this.generatePopFunction(disclosureComponentKeys[disclosureComponentKeys.length - 1]) : this.safelyCloseDisclosure,
+      dismissPresentedComponent: this.generatePopFunction(disclosureComponentKeys ? disclosureComponentKeys[disclosureComponentKeys.length - 1] : undefined),
       closeDisclosure: this.safelyCloseDisclosure,
       children: {
         components: (
