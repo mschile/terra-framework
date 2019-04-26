@@ -186,7 +186,13 @@ In addition to a `disclose` function, a number of other functions are exposed to
 
 Each of these functions returns a Promise that can be used for chaining, if necessary.
 
+##### `NavigationPrompt` Integration
+
+The DisclosureManager responds to NavigationPrompts rendered by the disclosure components. If a disclosed component renders a NavigationPrompt, the DisclosureManager will prompt the user before dismissal requests for that component are handled. Please see the `terra-navigation-prompt` documentation for more information.
+
 ##### A Note on `registerDismissCheck`
+
+> The NavigationPrompt is the recommended solution for components requiring user intervention before dismissal. `registerDismissCheck` is supported as a legacy solution but may be removed in a subsequent major release.
 
 The function given to registerDismissCheck must return a resolved or rejected Promise. If the Promise is resolved, the component is guaranteed to be dismissed. If cleanup logic needs to execute before the component is dismissed, it is a good idea to execute before returning the resolved Promise. If a rejected Promise is returned, the component will not be dismissed. Components can render a prompt or confirmation window to give users control over the dismissal, if desired.
 
