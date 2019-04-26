@@ -440,8 +440,10 @@ class DisclosureManager extends React.Component {
           if (checkpointRef && checkpointRef.current) {
             return checkpointRef.current.resolvePrompts({
               title: 'Unsaved Changes',
-              message: 'The taken action will result in the loss of data.',
-              acceptButtonText: 'Continue wihtout Saving',
+              message: prompts => (
+                `The taken action will result in the loss of data in the following areas: ${prompts.map(prompt => prompt.description).join(', ')}`
+              ),
+              acceptButtonText: 'Continue without Saving',
               rejectButtonText: 'Return',
             });
           }
@@ -449,9 +451,11 @@ class DisclosureManager extends React.Component {
           return undefined;
         })
         .then(() => {
+          if (disclosureComponentKeys.length === 1) {
             /**
              * If there is only one disclosed component, the disclosure is closed and all state is reset.
              */
+            this.closeDisclosure();
           } else {
             this.popDisclosure();
           }
