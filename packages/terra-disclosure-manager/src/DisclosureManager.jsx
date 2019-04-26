@@ -438,14 +438,12 @@ class DisclosureManager extends React.Component {
           const checkpointRef = this.state.checkpointRefs[key];
 
           if (checkpointRef && checkpointRef.current) {
-            return checkpointRef.current.resolvePrompts({
+            return checkpointRef.current.resolvePrompts(prompts => ({
               title: 'Unsaved Changes',
-              message: prompts => (
-                `The taken action will result in the loss of data in the following areas: ${prompts.map(prompt => prompt.description).join(', ')}`
-              ),
+              message: `The taken action will result in the loss of data in the following areas: ${prompts.map(prompt => prompt.description).join(', ')}`,
               acceptButtonText: 'Continue without Saving',
               rejectButtonText: 'Return',
-            });
+            }));
           }
 
           return undefined;
